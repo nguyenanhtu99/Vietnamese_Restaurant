@@ -11,6 +11,8 @@ export default class BoardManager extends Component {
       users: [],
       currentUser: authService.getCurrentUser()
     };
+
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,12 @@ export default class BoardManager extends Component {
 
   updateUser(id){
     this.props.history.push(`/user/${id}`);
+  }
+
+  deleteUser(id){
+    authService.deleteUser(id).then(res => {
+      this.setState({users: this.state.users.filter(user => user.id !== id)});
+    })
   }
 
   render() {

@@ -1,8 +1,6 @@
 package vietnam.restaurant.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -227,6 +225,17 @@ public class UserController {
 
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("Update complete!"));
+    }
+
+    @DeleteMapping("/{id}")
+    //@PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+        userRepository.delete(user);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
     }
 
 }

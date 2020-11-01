@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import authService from "../services/auth.service";
 import AuthService from "../services/auth.service";
 
 export default class Profile extends Component {
@@ -12,6 +13,7 @@ export default class Profile extends Component {
       currentUser: { username: "" }
     };
     this.editUser = this.editUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +26,14 @@ export default class Profile extends Component {
   editUser(id){
     this.props.history.push(`/user/${id}`);
   }
+
+  deleteUser(id){
+    authService.deleteUser(id).then(res => {
+      AuthService.logout();
+        this.props.history.push('/login');
+    })
+  }
+
 
   render() {
     if (this.state.redirect) {

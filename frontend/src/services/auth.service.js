@@ -50,6 +50,11 @@ class AuthService {
   userUpdateUser(userId, user){
     return axios.put(API_URL + "user-update-user/" + userId, user)
   }
+
+  deleteUser(userId){
+    return axios.delete(API_URL + userId, { headers: authHeader() });
+  }
+  
 }
 
 export default new AuthService();
