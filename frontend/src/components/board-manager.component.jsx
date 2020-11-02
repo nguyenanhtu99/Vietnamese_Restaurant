@@ -9,7 +9,8 @@ export default class BoardManager extends Component {
 
     this.state = {
       users: [],
-      currentUser: authService.getCurrentUser()
+      currentUser: authService.getCurrentUser(),
+      content:''
     };
 
     this.deleteUser = this.deleteUser.bind(this);
@@ -19,7 +20,8 @@ export default class BoardManager extends Component {
     UserService.getManagerBoard().then(
       response => {
         this.setState({
-          users: response.data
+          users: response.data,
+          content: "Manager"
         });
       },
       error => {
@@ -49,10 +51,11 @@ export default class BoardManager extends Component {
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>Manager</h3>
+          <h3>{this.state.content}</h3>
         </header>
+          {this.state.content === "Manager" &&
                  <div className = "row">
-                        <table className = "table table-striped table-bordered">
+                        <table className = "table table-striped table-bordered table-dark">
                             <thead>
                                 <tr>
                                     <th> User Name</th>
@@ -79,6 +82,7 @@ export default class BoardManager extends Component {
                         </table>
 
                  </div>
+            }
       </div>
     );
   }

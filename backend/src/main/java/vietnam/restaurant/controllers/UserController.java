@@ -228,7 +228,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: User is not found."));

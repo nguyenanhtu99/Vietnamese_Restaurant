@@ -49,11 +49,11 @@ export default class Profile extends Component {
         <header className="jumbotron">
           <h3>
             <strong>{currentUser.username}</strong> Profile
+            <button onClick={ () => this.editUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-success">Update </button> 
+            {currentUser.roles.includes("ROLE_ADMIN") &&
+              <button onClick={ () => this.deleteUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-danger">Delete </button>
+            }
           </h3>
-          <div className="row">
-            <button onClick={ () => this.editUser(currentUser.id)} className="btn btn-success">Update </button> 
-            <button onClick={ () => this.deleteUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-danger">Delete </button>       
-          </div>
         </header>
         <p>
           <strong>Token:</strong>{" "}
