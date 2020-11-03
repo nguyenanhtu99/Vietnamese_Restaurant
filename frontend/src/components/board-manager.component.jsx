@@ -49,13 +49,12 @@ export default class BoardManager extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
+      <div className="jumbotron">
           <h3>{this.state.content}</h3>
-        </header>
+
           {this.state.content === "Manager" &&
                  <div className = "row">
-                        <table className = "table table-striped table-bordered table-dark">
+                        <table className = "table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th> User Name</th>
@@ -80,7 +79,6 @@ export default class BoardManager extends Component {
                                 }
                             </tbody>
                         </table>
-
                  </div>
             }
       </div>

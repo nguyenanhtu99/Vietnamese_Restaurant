@@ -55,7 +55,7 @@ export default class Update extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
-        id: this.props.match.params.id,
+        id: parseInt(this.props.match.params.id),
       username: "",
       email: "",
       password: "",
@@ -74,7 +74,6 @@ export default class Update extends Component {
     const currentUser = AuthService.getCurrentUser();
 
     if (!currentUser) this.setState({ redirect: "/home" });
-    this.setState({showCheckbox: currentUser.roles.includes("ROLE_ADMIN") || currentUser.roles.includes("ROLE_MANAGER")});
     AuthService.getUserById(this.state.id).then(res =>{
         let userUpdate = res.data;
         this.setState({ currentUser: currentUser, userReady: true })
@@ -84,8 +83,8 @@ export default class Update extends Component {
                         currentRole: userUpdate.roles.map(role => role.name)
                       })
     })
-    this.state.editInfo = (currentUser.roles.includes("ROLE_ADMIN") || (currentUser.id == this.state.id))? true:false
-    this.state.editRole = (currentUser.roles.includes("ROLE_ADMIN") || (currentUser.roles.includes("ROLE_MANAGER")))? true:false
+    this.setState({editInfo: (currentUser.roles.includes("ROLE_ADMIN") || (currentUser.id === this.state.id))? true:false});
+    this.setState({editRole: (currentUser.roles.includes("ROLE_ADMIN") || (currentUser.roles.includes("ROLE_MANAGER")))? true:false});
     if (!currentUser.roles.includes("ROLE_ADMIN")) {this.state.listRole.shift()}
   }
 
@@ -200,7 +199,7 @@ export default class Update extends Component {
           }
         );
       }
-      if (this.state.currentUser.id == this.state.id) {
+      if (this.state.currentUser.id === this.state.id) {
         AuthService.logout();
         this.props.history.push('/login');
       }

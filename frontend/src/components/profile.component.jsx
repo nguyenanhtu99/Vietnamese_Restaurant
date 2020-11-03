@@ -43,19 +43,20 @@ export default class Profile extends Component {
     const { currentUser } = this.state;
 
     return (
-      <div className="container">
+      <div className="jumbotron">
         {(this.state.userReady) ?
         <div>
-        <header className="jumbotron">
           <h3>
             <strong>{currentUser.username}</strong> Profile
-            <button onClick={ () => this.editUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-success">Update </button> 
+            
+          </h3>
+          <button onClick={ () => this.editUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-success">Update </button> 
             {currentUser.roles.includes("ROLE_ADMIN") &&
               <button onClick={ () => this.deleteUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-danger">Delete </button>
             }
-          </h3>
-        </header>
-        <p>
+          
+
+          <p>
           <strong>Token:</strong>{" "}
           {currentUser.accessToken.substring(0, 20)} ...{" "}
           {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
@@ -73,6 +74,7 @@ export default class Profile extends Component {
           {currentUser.roles &&
             currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
         </ul>
+        
       </div>: null}
       </div>
     );

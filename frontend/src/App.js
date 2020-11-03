@@ -52,15 +52,7 @@ class App extends Component {
     const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showAdminBoard } = this.state;
 
     return (
-      <div
-      style={{  
-        backgroundImage: "url(" + "https://cdn.pixabay.com/photo/2020/03/25/02/31/rolls-4965915_1280.jpg" + ")",
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        height: "100vh",
-        backgroundAttachment: "fixed"
-      }}>
+      <div className="background">
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
             Vietnamese Restaurant
