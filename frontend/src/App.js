@@ -5,17 +5,20 @@ import "./App.css";
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/login.component.jsx";
-import Register from "./components/register.component.jsx";
+import Login from "./components/user/login.component.jsx";
+import Register from "./components/user/register.component.jsx";
 import Home from "./components/home.component.jsx";
-import Profile from "./components/profile.component.jsx";
-import BoardUser from "./components/board-user.component.jsx";
-import BoardManager from "./components/board-manager.component.jsx";
-import BoardAdmin from "./components/board-admin.component.jsx";
-import BoardWaiter from "./components/board-waiter.component.jsx";
-import BoardCashier from "./components/board-cashier.component.jsx";
-import BoardChef from "./components/board-chef.component.jsx";
-import Update from "./components/update.component";
+import Profile from "./components/user/profile.component.jsx";
+import Product from "./components/product/product.component.jsx";
+import NewProduct from "./components/product/new-product.component.jsx";
+import UpdateProduct from "./components/product/update-product.component.jsx";
+import BoardUser from "./components/board/board-user.component.jsx";
+import BoardManager from "./components/board/board-manager.component.jsx";
+import BoardAdmin from "./components/board/board-admin.component.jsx";
+import BoardWaiter from "./components/board/board-waiter.component.jsx";
+import BoardCashier from "./components/board/board-cashier.component.jsx";
+import BoardChef from "./components/board/board-chef.component.jsx";
+import Update from "./components/user/update.component";
 
 class App extends Component {
   constructor(props) {
@@ -104,6 +107,14 @@ class App extends Component {
               </li>
             )}
 
+            {showAdminBoard && (
+              <li className="nav-item">
+                <Link to={"/product"} className="nav-link">
+                  Product
+                </Link>
+              </li>
+            )}
+
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
@@ -149,6 +160,9 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/product" component={Product} />
+            <Route exact path="/product/add" component={NewProduct} />
+            <Route exact path="/product/:id" component={UpdateProduct} />
             <Route path="/user/:id" component={Update} />
             <Route path="/user" component={BoardUser} />
             <Route path="/waiter" component={BoardWaiter} />

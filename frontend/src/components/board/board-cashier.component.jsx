@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import UserService from "../services/user.service";
+import UserService from "../../services/user.service";
 
-export default class BoardChef extends Component {
+export default class BoardCashier extends Component {
   constructor(props) {
     super(props);
 
@@ -12,7 +12,7 @@ export default class BoardChef extends Component {
   }
 
   componentDidMount() {
-    UserService.getChefBoard().then(
+    UserService.getCashierBoard().then(
       response => {
         this.setState({
           content: response.data

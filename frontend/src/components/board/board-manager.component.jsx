@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import authService from "../services/auth.service";
+import authService from "../../services/auth.service";
 
-import UserService from "../services/user.service";
+import UserService from "../../services/user.service";
 
 export default class BoardManager extends Component {
   constructor(props) {

@@ -4,8 +4,6 @@ import vietnam.restaurant.models.media.Picture;
 import vietnam.restaurant.models.orders.OrderProduct;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +22,7 @@ public class Product {
     private String sku;
 
     @Column(name = "show_on_homepage", nullable = false)
-    private boolean showOnHomepage;
+    private boolean isShowOnHomepage;
 
     @Column(name = "price", nullable = false)
     private Float price;
@@ -34,7 +32,7 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unit", length = 20)
-    private Unit unit;
+    private EUnit unit;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "picture_id")
@@ -50,10 +48,10 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String sku, boolean showOnHomepage, Float price, boolean isEnteredPrice, Unit unit) {
+    public Product(String name, String sku, boolean isShowOnHomepage, Float price, boolean isEnteredPrice, EUnit unit) {
         this.name = name;
         this.sku = sku;
-        this.showOnHomepage = showOnHomepage;
+        this.isShowOnHomepage = isShowOnHomepage;
         this.price = price;
         this.isEnteredPrice = isEnteredPrice;
         this.unit = unit;
@@ -84,11 +82,11 @@ public class Product {
     }
 
     public boolean isShowOnHomepage() {
-        return showOnHomepage;
+        return isShowOnHomepage;
     }
 
-    public void setShowOnHomepage(boolean showOnHomepage) {
-        this.showOnHomepage = showOnHomepage;
+    public void setShowOnHomepage(boolean isShowOnHomepage) {
+        this.isShowOnHomepage = isShowOnHomepage;
     }
 
     public Float getPrice() {
@@ -107,11 +105,11 @@ public class Product {
         isEnteredPrice = enteredPrice;
     }
 
-    public Unit getUnit() {
+    public EUnit getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(EUnit unit) {
         this.unit = unit;
     }
 

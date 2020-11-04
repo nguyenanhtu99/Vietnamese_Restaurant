@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 
-import UserService from "../services/user.service";
+import UserService from "../../services/user.service";
 
 export default class BoardUser extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 package vietnam.restaurant.models.products;
 
-public enum Unit {
+public enum EUnit {
     ITEM,
     PIECE,
     SET,

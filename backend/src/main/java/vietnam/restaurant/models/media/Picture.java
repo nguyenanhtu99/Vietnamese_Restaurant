@@ -17,6 +17,8 @@ public class Picture {
     private Long id;
 
     @Column(name = "picture", nullable = false)
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] picture;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "picture")

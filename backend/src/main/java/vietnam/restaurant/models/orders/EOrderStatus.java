@@ -1,6 +1,6 @@
 package vietnam.restaurant.models.orders;
 
-public enum OrderStatus {
+public enum EOrderStatus {
     PLACED,
     COOKED,
     SERVED,

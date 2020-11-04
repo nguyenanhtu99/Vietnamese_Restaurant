@@ -1,7 +1,5 @@
 package vietnam.restaurant.models.orders;
 
-import vietnam.restaurant.models.products.Product;
-import vietnam.restaurant.models.users.Role;
 import vietnam.restaurant.models.users.User;
 
 import javax.persistence.*;
@@ -21,7 +19,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20, nullable = false)
-    private OrderStatus status;
+    private EOrderStatus status;
 
     private String note;
 
@@ -45,7 +43,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Float total, OrderStatus status, String note, Date createdOn) {
+    public Order(Float total, EOrderStatus status, String note, Date createdOn) {
         this.total = total;
         this.status = status;
         this.note = note;
@@ -68,11 +66,11 @@ public class Order {
         this.total = total;
     }
 
-    public OrderStatus getStatus() {
+    public EOrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(EOrderStatus status) {
         this.status = status;
     }
 
