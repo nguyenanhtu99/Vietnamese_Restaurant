@@ -227,6 +227,17 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("Update complete!"));
     }
 
+    @PutMapping("/user-request-role/{id}")
+    //@PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> userRequestRole(@PathVariable Long id, @RequestBody User userRequest){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+        user.setUserRequest(userRequest.getUserRequest());
+
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Update complete!"));
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){

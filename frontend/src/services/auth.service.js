@@ -54,6 +54,10 @@ class AuthService {
   deleteUser(userId){
     return axios.delete(API_URL + userId, { headers: authHeader() });
   }
+
+  userRequest(userId, request){
+    return axios.put(API_URL + "user-request-role/" + userId, request)
+  }
   
 }
 

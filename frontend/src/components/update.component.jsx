@@ -60,6 +60,7 @@ export default class Update extends Component {
       email: "",
       password: "",
       currentRole:[],
+      userRequestRoles: "",
       role: [],
       successful: false,
       message: "",
@@ -80,7 +81,8 @@ export default class Update extends Component {
 
         this.setState({username: userUpdate.username,
                         email: userUpdate.email,
-                        currentRole: userUpdate.roles.map(role => role.name)
+                        currentRole: userUpdate.roles.map(role => role.name),
+                        userRequestRoles: userUpdate.userRequest
                       })
     })
     this.setState({editInfo: (currentUser.roles.includes("ROLE_ADMIN") || (currentUser.id === this.state.id))? true:false});
@@ -114,7 +116,7 @@ export default class Update extends Component {
       this.setState({
         role: roles
       });
-    console.log(this.state.role);
+    //console.log(this.state.role);
   }
 
   handleUpdate(e) {
@@ -277,11 +279,17 @@ export default class Update extends Component {
                   </div>
                 }
                 <p>
-                  <strong>Current Role:</strong>{" "}
+                  <strong>Current Roles:</strong>{" "}
                   {this.state.currentRole.map(role => <div>{role}</div>)}
                 </p>
                 {this.state.editRole &&
-                <div>
+                <div className="form-group">
+                  {this.state.userRequestRoles !== null &&
+                  <p>
+                    <strong>User Request Roles:</strong>{" "}
+                    {this.state.userRequestRoles}
+                  </p>
+                  }
                     <label>Select roles:</label>
                     <div className="custom-control custom-checkbox" >
                         {   this.state.listRole.map(role => {

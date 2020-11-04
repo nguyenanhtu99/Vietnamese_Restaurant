@@ -34,8 +34,8 @@ export default class Home extends Component {
       <div>
         <div class="hero-text-box">
                 <h1>Goodbye junk food. <br></br> Hello super healthy meals.</h1>
-                <a class="btn btn-full" href="/">I’m hungry</a>
-                <a class="btn btn-ghost" href="/">Show me more</a>
+                <a className="btn btn-full" href="/">I’m hungry</a>
+                <a className="btn btn-ghost" href="/">Show me more</a>
         </div>
       </div>
     );

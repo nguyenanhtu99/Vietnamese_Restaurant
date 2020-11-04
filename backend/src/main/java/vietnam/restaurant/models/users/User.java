@@ -3,6 +3,7 @@ package vietnam.restaurant.models.users;
 import vietnam.restaurant.models.orders.Order;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -34,6 +35,8 @@ public class User {
 	@Size(max = 120)
 	private String password;
 
+	private String userRequest;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
 				joinColumns = @JoinColumn(name = "user_id"), 
@@ -43,6 +46,7 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Order> orders = new HashSet<Order>();
 
+
 	public User() {
 	}
 
@@ -50,6 +54,10 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+	}
+
+	public User(String userRequest) {
+		this.userRequest = userRequest;
 	}
 
 	public Long getId() {
@@ -98,5 +106,13 @@ public class User {
 
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
+	}
+
+	public String getUserRequest() {
+		return userRequest;
+	}
+
+	public void setUserRequest(String userRequest) {
+		this.userRequest = userRequest;
 	}
 }

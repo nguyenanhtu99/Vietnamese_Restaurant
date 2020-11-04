@@ -60,6 +60,7 @@ export default class BoardManager extends Component {
                                     <th> User Name</th>
                                     <th> User Email</th>
                                     <th> User Roles</th>
+                                    <th> User Request Roles</th>
                                     <th> Actions</th>
                                 </tr>
                             </thead>
@@ -70,6 +71,7 @@ export default class BoardManager extends Component {
                                              <td> {user.username} </td>   
                                              <td> {user.email}</td>
                                              <td> {user.roles.map(role => <div>{role.name}</div>)}</td>
+                                             <td> {user.userRequest}</td>
                                              <td>
                                                 <button onClick={ () => this.updateUser(user.id)} className="btn btn-success">Update </button>                                            
                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteUser(user.id)} className="btn btn-danger">Delete </button>
