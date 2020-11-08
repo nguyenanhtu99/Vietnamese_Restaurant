@@ -35,6 +35,8 @@ export default class BoardManager extends Component {
         });
       }
     );
+    
+    
   }
 
   updateUser(id){
@@ -66,7 +68,7 @@ export default class BoardManager extends Component {
                             </thead>
                             <tbody>
                                 {
-                                    this.state.users.filter(user => this.state.currentUser.roles.includes("ROLE_ADMIN") || !user.roles.map(role => role.name).includes("ROLE_ADMIN")).map(user =>
+                                    this.state.users.filter(user => this.state.currentUser.roles.includes("ROLE_ADMIN") || !user.roles.map(role => role.name).includes("ROLE_ADMIN")).map(user =>                       
                                       <tr key = {user.id}>
                                              <td> {user.username} </td>   
                                              <td> {user.email}</td>

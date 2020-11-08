@@ -51,7 +51,7 @@ public class TestController {
 	}
 
 	@GetMapping("/manager")
-	@PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
 	public List<User> getAllUser(){
 	    return userRepository.findAll();
     }

@@ -38,6 +38,12 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    public OrderProduct(OrderProductKey id, Float sellPrice, Float quantity) {
+        this.id = id;
+        this.sellPrice = sellPrice;
+        this.quantity = quantity;
+    }
+
     public OrderProductKey getId() {
         return id;
     }

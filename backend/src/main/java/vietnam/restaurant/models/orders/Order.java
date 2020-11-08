@@ -24,30 +24,30 @@ public class Order {
     private String note;
 
     @Column(name = "created_on", nullable = false)
-    private Date createdOn;
+    private String createdOn;
 
     @Column(name = "updated_on")
-    private Date updatedOn;
+    private String updatedOn;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "position_id")
-    private Position position;
+    @Column(name = "position")
+    private Long position;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-    private Set<OrderProduct> orderProducts = new HashSet<OrderProduct>();
+    private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order() {
     }
 
-    public Order(Float total, EOrderStatus status, String note, Date createdOn) {
+    public Order(Float total, EOrderStatus status, String note, String createdOn, Long position) {
         this.total = total;
         this.status = status;
         this.note = note;
         this.createdOn = createdOn;
+        this.position = position;
     }
 
     public Long getId() {
@@ -82,28 +82,28 @@ public class Order {
         this.note = note;
     }
 
-    public Date getCreatedOn() {
+    public String getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Date createdOn) {
+    public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
     }
 
-    public Date getUpdatedOn() {
+    public String getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(Date updatedOn) {
+    public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Position getPosition() {
+    public Long getTable() {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setTable(Long table) {
+        this.position = table;
     }
 
     public User getUser() {
