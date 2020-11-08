@@ -42,8 +42,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<OrderProduct> orderProducts = new HashSet<OrderProduct>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+//    private Set<OrderProduct> orderProducts = new HashSet<OrderProduct>();
 
     public Product() {
     }
@@ -129,11 +129,11 @@ public class Product {
         this.category = category;
     }
 
-    public Set<OrderProduct> getOrderProducts() {
-        return orderProducts;
-    }
-
-    public void setOrderProducts(Set<OrderProduct> orderProducts) {
-        this.orderProducts = orderProducts;
-    }
+//    public Set<OrderProduct> getOrderProducts() {
+//        return orderProducts;
+//    }
+//
+//    public void setOrderProducts(Set<OrderProduct> orderProducts) {
+//        this.orderProducts = orderProducts;
+//    }
 }

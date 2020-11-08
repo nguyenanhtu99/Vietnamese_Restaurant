@@ -43,8 +43,8 @@ public class User {
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	private Set<Order> orders = new HashSet<Order>();
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//	private Set<Order> orders = new HashSet<Order>();
 
 
 	public User() {
@@ -100,13 +100,13 @@ public class User {
 		this.roles = roles;
 	}
 
-	public Set<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Set<Order> orders) {
-		this.orders = orders;
-	}
+//	public Set<Order> getOrders() {
+//		return orders;
+//	}
+//
+//	public void setOrders(Set<Order> orders) {
+//		this.orders = orders;
+//	}
 
 	public String getUserRequest() {
 		return userRequest;
