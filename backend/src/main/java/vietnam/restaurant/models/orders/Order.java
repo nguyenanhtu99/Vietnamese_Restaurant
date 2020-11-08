@@ -42,8 +42,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Float total, EOrderStatus status, String note, String createdOn, Long position) {
-        this.total = total;
+    public Order(EOrderStatus status, String note, String createdOn, Long position) {
         this.status = status;
         this.note = note;
         this.createdOn = createdOn;

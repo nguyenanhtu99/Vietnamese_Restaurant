@@ -14,8 +14,7 @@ import vietnam.restaurant.repository.products.ProductRepository;
 import vietnam.restaurant.repository.users.UserRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -36,14 +35,13 @@ public class OrderController {
     @PostMapping("/add")
     private ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest){
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH::mm::ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
         userRepository.findById(orderRequest.getUser_id())
                 .orElseThrow(() -> new RuntimeException("Error: User is not found."));
 
-        Order order = new Order(orderRequest.getTotal(),
-                                EOrderStatus.PLACED,
+        Order order = new Order(EOrderStatus.PLACED,
                                 orderRequest.getNote(),
                                 formatter.format(date), orderRequest.getPosition());
 
@@ -53,18 +51,17 @@ public class OrderController {
         order.setUser(user);
 
         //Products
-        Set<Long> idProducts = orderRequest.getProducts();
-        //Set<OrderProduct> orderProducts = new HashSet<>();
-        idProducts.forEach(product_id -> {
-            Product product = productRepository.findById(product_id)
-                    .orElseThrow(() -> new RuntimeException("Error: Product is not found."));
-            OrderProductKey orderProductKey = new OrderProductKey(order.getId(),product_id);
-            OrderProduct orderProduct = new OrderProduct(orderProductKey, order, product, product.getPrice(), 1F);
-            orderProductRepository.save(orderProduct);
-            //orderProducts.add(orderProduct);
-        });
-        //order.setOrderProducts(orderProducts);
+        List<Long> product_ids = orderRequest.getProduct_ids();
+        List<Float> quantities = orderRequest.getQuantities();
 
+        for (int i=0; i<product_ids.size(); i++){
+            Product product = productRepository.findById(product_ids.get(i))
+                    .orElseThrow(() -> new RuntimeException("Error: Product is not found."));
+            order.setTotal(quantities.get(i)*product.getPrice());
+            OrderProductKey orderProductKey = new OrderProductKey(order.getId(),product_ids.get(i));
+            OrderProduct orderProduct = new OrderProduct(orderProductKey, order, product, product.getPrice(), quantities.get(i));
+            orderProductRepository.save(orderProduct);
+        }
 
         return ResponseEntity.ok(new MessageResponse("Order created successfully!"));
     }

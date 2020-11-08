@@ -1,9 +1,8 @@
 package vietnam.restaurant.loaders.requests;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
-public class OrderRequest {
+public class OrderRequest{
 
     private Float total;
 
@@ -19,7 +18,25 @@ public class OrderRequest {
 
     private String status;
 
-    private Set<Long> products;
+    private List<Long> product_ids;
+
+    private List<Float> quantities;
+
+    public List<Long> getProduct_ids() {
+        return product_ids;
+    }
+
+    public void setProduct_ids(List<Long> product_ids) {
+        this.product_ids = product_ids;
+    }
+
+    public List<Float> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(List<Float> quantities) {
+        this.quantities = quantities;
+    }
 
     public Float getTotal() {
         return total;
@@ -77,11 +94,4 @@ public class OrderRequest {
         this.status = status;
     }
 
-    public Set<Long> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Long> products) {
-        this.products = products;
-    }
 }
