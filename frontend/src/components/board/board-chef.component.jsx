@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import authService from "../../services/auth.service";
+import userService from "../../services/user.service";
 
 import UserService from "../../services/user.service";
 
@@ -7,15 +9,20 @@ export default class BoardChef extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      orders: [],
+      currentUser: authService.getCurrentUser(),
+      content:''
     };
+
+    this.cookedOrder = this.cookedOrder.bind(this);
   }
 
   componentDidMount() {
     UserService.getChefBoard().then(
       response => {
         this.setState({
-          content: response.data
+          orders: response.data,
+          content: "Chef"
         });
       },
       error => {
@@ -29,14 +36,51 @@ export default class BoardChef extends Component {
         });
       }
     );
+    
+    
+  }
+
+  cookedOrder(id){
+    userService.cookedOrder(id);
+    window.location.reload();
   }
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
+      <div className="jumbotron">
           <h3>{this.state.content}</h3>
-        </header>
+
+          {this.state.content === "Chef" &&
+                 <div className = "row">
+                        <table className = "table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th> Table</th>
+                                    <th> Placed At</th>
+                                    <th> Product</th>
+                                    <th> Quantity</th>
+                                    <th> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.orders.map(order =>                     
+                                      <tr key = {order.order.id}>
+                                             <td> {order.order.position} </td>   
+                                             <td> {order.order.createdOn}</td>
+                                             <td> {order.product.name}</td>
+                                             <td> {order.quantity} {order.product.unit}</td>                                       
+                                             <td>
+                                             <button onClick={ () => this.cookedOrder(order.order.id)} className="btn btn-success">Cooked </button>                                            
+                                                
+                                             </td>
+                                      </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                 </div>
+            }
       </div>
     );
   }

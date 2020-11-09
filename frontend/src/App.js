@@ -19,6 +19,7 @@ import BoardWaiter from "./components/board/board-waiter.component.jsx";
 import BoardCashier from "./components/board/board-cashier.component.jsx";
 import BoardChef from "./components/board/board-chef.component.jsx";
 import Update from "./components/user/update.component";
+import createOrder from "./components/order/createOrder.component";
 
 class App extends Component {
   constructor(props) {
@@ -163,6 +164,7 @@ class App extends Component {
             <Route exact path="/product" component={Product} />
             <Route exact path="/product/add" component={NewProduct} />
             <Route exact path="/product/:id" component={UpdateProduct} />
+            <Route exact path="/order/add" component={createOrder} />
             <Route path="/user/:id" component={Update} />
             <Route path="/user" component={BoardUser} />
             <Route path="/waiter" component={BoardWaiter} />

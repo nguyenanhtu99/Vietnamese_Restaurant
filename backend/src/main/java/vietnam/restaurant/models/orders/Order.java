@@ -1,5 +1,6 @@
 package vietnam.restaurant.models.orders;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import vietnam.restaurant.models.users.User;
 
 import javax.persistence.*;
@@ -32,12 +33,13 @@ public class Order {
     @Column(name = "position")
     private Long position;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-    private Set<OrderProduct> orderProducts = new HashSet<>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+//    private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order() {
     }
@@ -97,12 +99,12 @@ public class Order {
         this.updatedOn = updatedOn;
     }
 
-    public Long getTable() {
+    public Long getPosition() {
         return position;
     }
 
-    public void setTable(Long table) {
-        this.position = table;
+    public void setPosition(Long table) {
+        this.position = position;
     }
 
     public User getUser() {
@@ -112,12 +114,12 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Set<OrderProduct> getOrderProducts() {
-        return orderProducts;
-    }
-
-    public void setOrderProducts(Set<OrderProduct> orderProducts) {
-        this.orderProducts = orderProducts;
-    }
+//
+//    public Set<OrderProduct> getOrderProducts() {
+//        return orderProducts;
+//    }
+//
+//    public void setOrderProducts(Set<OrderProduct> orderProducts) {
+//        this.orderProducts = orderProducts;
+//    }
 }

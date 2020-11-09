@@ -32,8 +32,13 @@ public class OrderController {
     @Autowired
     private OrderProductRepository orderProductRepository;
 
+    @GetMapping("/all")
+    public List<OrderProduct> getAllOrder(){
+        return orderProductRepository.findAll();
+    }
+
     @PostMapping("/add")
-    private ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest){
+    public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest){
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
@@ -62,6 +67,7 @@ public class OrderController {
             OrderProduct orderProduct = new OrderProduct(orderProductKey, order, product, product.getPrice(), quantities.get(i));
             orderProductRepository.save(orderProduct);
         }
+
 
         return ResponseEntity.ok(new MessageResponse("Order created successfully!"));
     }

@@ -16,12 +16,24 @@ class UserService {
     return axios.get(API_URL + 'waiter', { headers: authHeader() });
   }
 
+  servedOrder(id){
+    return axios.put(API_URL + "served/" + id, id, { headers: authHeader() })
+  }
+
   getCashierBoard(){
     return axios.get(API_URL + 'cashier', { headers: authHeader() });
   }
 
+  paidOrder(id){
+    return axios.put(API_URL + "paid/" + id, id, { headers: authHeader() })
+  }
+
   getChefBoard(){
     return axios.get(API_URL + 'chef', { headers: authHeader() });
+  }
+
+  cookedOrder(id){
+    return axios.put(API_URL + "cooked/" + id, id, { headers: authHeader() })
   }
 
   getManagerBoard() {

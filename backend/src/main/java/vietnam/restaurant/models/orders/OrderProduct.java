@@ -1,5 +1,6 @@
 package vietnam.restaurant.models.orders;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import vietnam.restaurant.models.products.Product;
 
 import javax.persistence.*;
@@ -11,11 +12,13 @@ public class OrderProduct {
     @EmbeddedId
     private OrderProductKey id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("productId")
     @JoinColumn(name = "product_id")
@@ -34,12 +37,6 @@ public class OrderProduct {
         this.id = id;
         this.order = order;
         this.product = product;
-        this.sellPrice = sellPrice;
-        this.quantity = quantity;
-    }
-
-    public OrderProduct(OrderProductKey id, Float sellPrice, Float quantity) {
-        this.id = id;
         this.sellPrice = sellPrice;
         this.quantity = quantity;
     }

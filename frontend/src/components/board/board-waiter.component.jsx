@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import userService from "../../services/user.service";
 
 import UserService from "../../services/user.service";
 
@@ -7,7 +8,8 @@ export default class BoardWaiter extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      orders: [],
+      content:''
     };
   }
 
@@ -15,7 +17,8 @@ export default class BoardWaiter extends Component {
     UserService.getWaiterBoard().then(
       response => {
         this.setState({
-          content: response.data
+          orders: response.data,
+          content: "Waiter"
         });
       },
       error => {
@@ -29,14 +32,59 @@ export default class BoardWaiter extends Component {
         });
       }
     );
+    
+    
+  }
+
+  servedOrder(id){
+    userService.servedOrder(id);
+    window.location.reload();
+  }
+
+  placeOrder(){
+    this.props.history.push('/order/add');
   }
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
+      <div className="jumbotron">
           <h3>{this.state.content}</h3>
-        </header>
+
+          {this.state.content === "Waiter" &&
+                 <div className = "row">
+                   <button onClick={ () => this.placeOrder()} className="btn btn-primary">PLACE ORDER </button>
+                   
+                        <table className = "table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th> Table</th>
+                                    <th> Created On</th>
+                                    <th> Cooked At</th>
+                                    <th> Product</th>
+                                    <th> Quantity</th>
+                                    <th> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.orders.map(order =>                     
+                                      <tr key = {order.order.id}>
+                                             <td> {order.order.position} </td>   
+                                             <td> {order.order.createdOn}</td>
+                                             <td> {order.order.updatedOn}</td>
+                                             <td> {order.product.name}</td>
+                                             <td> {order.quantity} {order.product.unit}</td>                                     
+                                             <td>
+                                                <button onClick={ () => this.servedOrder(order.id.orderId)} className="btn btn-success">Served </button>                                                     
+                                             </td>
+                                      </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                    
+                 </div>
+            }
       </div>
     );
   }
