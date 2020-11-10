@@ -2,6 +2,7 @@ package vietnam.restaurant.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vietnam.restaurant.loaders.requests.OrderRequest;
 import vietnam.restaurant.loaders.responses.MessageResponse;
@@ -33,11 +34,13 @@ public class OrderController {
     private OrderProductRepository orderProductRepository;
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public List<OrderProduct> getAllOrder(){
         return orderProductRepository.findAll();
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('WAITER') or hasRole('ADMIN')")
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest){
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -1,36 +1,23 @@
 import React, { Component } from "react";
-import userService from "../../services/user.service";
+import orderService from "../../services/order.service";
 
-import UserService from "../../services/user.service";
-
-export default class BoardCashier extends Component {
+export default class Orders extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       orders: [],
-      result_orders: [[]],
       content:''
     };
-
   }
 
   componentDidMount() {
-    UserService.getCashierBoard().then(
+    orderService.getAllOrder().then(
       response => {
         this.setState({
           orders: response.data.sort((a,b) => a.order.position - b.order.position),
-          content: "Cashier"
+          content: "Orders"
         });
-        // let result = this.state.orders;
-        // let orders = []
-        // while (result.length !== 0){
-        //   let cur_position = result[0].order.position;
-        //   let chunk = result.filter(order => order.order.position === cur_position).length;
-        //   orders.push(result.splice(0,chunk));
-        // }
-        // this.setState({result_orders: orders})
-        // console.log(this.state.result_orders);
       },
       error => {
         this.setState({
@@ -47,9 +34,13 @@ export default class BoardCashier extends Component {
     
   }
 
-  paidOrder(id){
-    userService.paidOrder(id);
-    window.location.reload();
+  deleteOrder(id){
+    // userService.servedOrder(id);
+    // window.location.reload();
+  }
+
+  placeOrder(){
+    this.props.history.push('/order/add');
   }
 
   render() {
@@ -57,38 +48,41 @@ export default class BoardCashier extends Component {
       <div className="jumbotron">
           <h3>{this.state.content}</h3>
 
-          {this.state.content === "Cashier" &&
+          {this.state.content === "Orders" &&
                  <div className = "row">
                         <table className = "table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th> Table</th>
                                     <th> Created On</th>
-                                    <th> Served At</th>
+                                    <th> Update At</th>
                                     <th> Product</th>
                                     <th> Quantity</th>
                                     <th> Total</th>
+                                    <th> Status</th>
                                     <th> Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    this.state.orders.map(order =>
-                                      <tr key={order.order.id}>
-                                             <td>{order.order.position}</td>
+                                    this.state.orders.map(order =>                     
+                                      <tr key = {order.order.id}>
+                                             <td> {order.order.position} </td>   
                                              <td> {order.order.createdOn}</td>
                                              <td> {order.order.updatedOn}</td>
                                              <td> {order.product.name}</td>
-                                             <td> {order.quantity} {order.product.unit}</td>
+                                             <td> {order.quantity} {order.product.unit}</td>  
                                              <td> {order.order.total}$</td>
+                                             <td> {order.order.status}</td>                                   
                                              <td>
-                                                <button onClick={ () => this.paidOrder(order.order.id)} className="btn btn-success">Paid </button>                                            
-                                              </td>
+                                                <button onClick={ () => this.deleteOrder(order.id.orderId)} className="btn btn-danger">Delete </button>                                                     
+                                             </td>
                                       </tr>
                                     )
                                 }
                             </tbody>
                         </table>
+                    
                  </div>
             }
       </div>
