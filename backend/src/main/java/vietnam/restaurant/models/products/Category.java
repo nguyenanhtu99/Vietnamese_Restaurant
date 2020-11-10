@@ -19,11 +19,11 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory")
-    private Set<Category> subCategories = new HashSet<Category>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory")
+//    private Set<Category> subCategories = new HashSet<Category>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    private Set<Product> products = new HashSet<Product>();
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+//    private Set<Product> products = new HashSet<Product>();
 
     public Category() {
     }
@@ -61,19 +61,19 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
-    public Set<Category> getSubCategories() {
-        return subCategories;
-    }
+//    public Set<Category> getSubCategories() {
+//        return subCategories;
+//    }
+//
+//    public void setSubCategories(Set<Category> subCategories) {
+//        this.subCategories = subCategories;
+//    }
 
-    public void setSubCategories(Set<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<Product> products) {
+//        this.products = products;
+//    }
 }

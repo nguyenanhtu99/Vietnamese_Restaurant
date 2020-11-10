@@ -35,6 +35,7 @@ export default class UpdateProduct extends Component {
     this.onChangeUnit = this.onChangeUnit.bind(this);
     this.onChangeShowOnHomepage = this.onChangeShowOnHomepage.bind(this);
     this.onChangeEnteredPrice = this.onChangeEnteredPrice.bind(this);
+    this.onChangePicture = this.onChangePicture.bind(this);
 
     this.state = {
         id: parseInt(this.props.match.params.id),
@@ -44,6 +45,8 @@ export default class UpdateProduct extends Component {
       unit: "ITEM",
       isShowOnHomepage: false,
       isEnteredPrice: false,
+      picture: null,
+      picturePreviewUrl: null,
       successful: false,
       message: "",
       listUnit: ["ITEM", "PIECE", "SET", "KG"]
@@ -52,7 +55,7 @@ export default class UpdateProduct extends Component {
 
   componentDidMount(){
     ProductService.getProductById(this.state.id).then(
-        response => {            
+        response => {                      
             this.setState({
                 name: response.data.name,
                 sku: response.data.sku,
@@ -60,7 +63,7 @@ export default class UpdateProduct extends Component {
                 unit: response.data.unit,
                 isShowOnHomepage: response.data.showOnHomepage,
                 isEnteredPrice: response.data.enteredPrice
-            });     
+            });
         },
         error => {
             this.setState({ redirect: "/home" });
@@ -105,6 +108,38 @@ export default class UpdateProduct extends Component {
     });
   }
 
+  onChangePicture(e){
+    e.preventDefault();
+    this.setState({
+        picture: e.target.files[0]
+    });
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    ProductService.uploadPicture(
+      formData
+      ).then(
+      response => {
+        alert(response.data.message);
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        alert(resMessage);
+      }
+    );
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () =>{
+        this.setState({
+        picturePreviewUrl: reader.result
+      });
+    }
+  }
+
   handleProduct(e) {
     e.preventDefault();
 
@@ -115,18 +150,24 @@ export default class UpdateProduct extends Component {
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0) {
+    if (this.checkBtn.context._errors.length === 0) {      
       let productRequest = {
         name: this.state.name,
         sku: this.state.sku,
         price: this.state.price,
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
-        isEnteredPrice: this.state.isEnteredPrice
+        isEnteredPrice: this.state.isEnteredPricee
       };
+      let formData = null;
+      if(this.state.picture !== null){
+        formData = new FormData();
+        formData.append('pictureFile', this.state.picture);
+      }      
       ProductService.updateProduct(
         this.state.id,
-        productRequest
+        productRequest, 
+        formData
       ).then(
         response => {
           this.setState({
@@ -221,6 +262,7 @@ export default class UpdateProduct extends Component {
                     <Input
                       type="checkbox"
                       name="isShowOnHomepage"
+                      checked= {this.state.isShowOnHomepage}                   
                       value={this.state.isShowOnHomepage}
                       onChange={this.onChangeShowOnHomepage}
                     />
@@ -231,9 +273,24 @@ export default class UpdateProduct extends Component {
                     <Input
                       type="checkbox"
                       name="isEnteredPrice"
+                      checked= {this.state.isEnteredPrice} 
                       value={this.state.isEnteredPrice}
                       onChange={this.onChangeEnteredPrice}
                     />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="picture">Picture</label>
+                    <Input
+                      type="file"
+                      name="picture"
+                      accept="image/*"
+                      onChange={this.onChangePicture}
+                    />                                        
+                    <img alt="preview" src={
+                      this.state.picturePreviewUrl === null ? 
+                      "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : this.state.picturePreviewUrl
+                      } height="200px" width="200px"/>
                 </div>
 
                 <div className="form-group">

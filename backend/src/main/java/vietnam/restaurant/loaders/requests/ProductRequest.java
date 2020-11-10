@@ -1,12 +1,17 @@
 package vietnam.restaurant.loaders.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
+import vietnam.restaurant.models.media.Picture;
 import vietnam.restaurant.models.products.EUnit;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.IOException;
 
 public class ProductRequest {
     @NotBlank
@@ -28,6 +33,7 @@ public class ProductRequest {
     @NotNull
     boolean isEnteredPrice;
 
+    Long pictureId;
 
     public String getName() {
         return name;
@@ -75,5 +81,13 @@ public class ProductRequest {
 
     public void setUnit(EUnit unit) {
         this.unit = unit;
+    }
+
+    public Long getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(Long pictureId) {
+        this.pictureId = pictureId;
     }
 }

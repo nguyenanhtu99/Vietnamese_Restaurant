@@ -35,6 +35,7 @@ export default class NewProduct extends Component {
     this.onChangeUnit = this.onChangeUnit.bind(this);
     this.onChangeShowOnHomepage = this.onChangeShowOnHomepage.bind(this);
     this.onChangeEnteredPrice = this.onChangeEnteredPrice.bind(this);
+    this.onChangePicture = this.onChangePicture.bind(this);
 
     this.state = {
       name: "",
@@ -43,6 +44,8 @@ export default class NewProduct extends Component {
       unit: "ITEM",
       isShowOnHomepage: false,
       isEnteredPrice: false,
+      picture: null,
+      picturePreviewUrl: null,
       successful: false,
       message: "",
       listUnit: ["ITEM", "PIECE", "SET", "KG"]
@@ -85,6 +88,38 @@ export default class NewProduct extends Component {
     });
   }
 
+  onChangePicture(e){
+    e.preventDefault();
+    this.setState({
+        picture: e.target.files[0]
+    });
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    ProductService.uploadPicture(
+      formData
+      ).then(
+      response => {
+        alert(response.data.message);
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        alert(resMessage);
+      }
+    );
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () =>{
+        this.setState({
+        picturePreviewUrl: reader.result
+      });
+    }
+  }
+
   handleProduct(e) {
     e.preventDefault();
 
@@ -102,7 +137,8 @@ export default class NewProduct extends Component {
         price: this.state.price,
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
-        isEnteredPrice: this.state.isEnteredPrice
+        isEnteredPrice: this.state.isEnteredPrice,
+        picture: this.state.picture
       };
 
       ProductService.addNewProduct(
@@ -214,6 +250,20 @@ export default class NewProduct extends Component {
                       value={this.state.isEnteredPrice}
                       onChange={this.onChangeEnteredPrice}
                     />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="picture">Picture</label>
+                    <Input
+                      type="file"
+                      name="picture"
+                      accept="image/*"
+                      onChange={this.onChangePicture}
+                    />                                        
+                    <img alt="preview" src={
+                      this.state.picturePreviewUrl === null ? 
+                      "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : this.state.picturePreviewUrl
+                      } height="200px" width="200px"/>
                 </div>
 
                 <div className="form-group">
