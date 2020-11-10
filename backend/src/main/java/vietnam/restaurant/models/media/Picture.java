@@ -16,19 +16,25 @@ public class Picture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
     @Column(name = "picture", nullable = false)
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] picture;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "picture")
-    private Set<Product> products;
+    @Column(name = "picture_url")
+    private String pictureUrl;
+
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "picture")
+//    private Set<Product> products;
 
     public Picture() {
     }
 
-    public Picture(byte[] picture) {
+    public Picture(byte[] picture, String type) {
         this.picture = picture;
+        this.type = type;
     }
 
     public Long getId() {
@@ -47,11 +53,27 @@ public class Picture {
         this.picture = picture;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<Product> products) {
+//        this.products = products;
+//    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
