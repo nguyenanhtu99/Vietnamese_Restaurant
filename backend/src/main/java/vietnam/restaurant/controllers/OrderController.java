@@ -16,6 +16,7 @@ import vietnam.restaurant.repository.users.UserRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -71,8 +72,19 @@ public class OrderController {
             orderProductRepository.save(orderProduct);
         }
 
-
         return ResponseEntity.ok(new MessageResponse("Order created successfully!"));
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Boolean>> deleteOrder(@PathVariable Long id){
+        List<OrderProduct> orderProducts = orderProductRepository.findAll().stream()
+                .filter(orderProduct -> orderProduct.getOrder().getId().equals(id))
+                .collect(Collectors.toList());
+        orderProducts.forEach(orderProduct -> orderProductRepository.delete(orderProduct));
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
+    }
 }

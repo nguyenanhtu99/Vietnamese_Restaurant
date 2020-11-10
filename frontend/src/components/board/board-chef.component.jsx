@@ -41,8 +41,18 @@ export default class BoardChef extends Component {
   }
 
   cookedOrder(id){
-    userService.cookedOrder(id);
-    window.location.reload();
+    var result = window.confirm("Is this dish done?");
+    if (result) {
+      userService.cookedOrder(id);
+      window.location.reload();
+    }
+  }
+  cancelOrder(id){
+    var result = window.confirm("Want to cancel this order?");
+    if (result) {
+      userService.cancelOrder(id);
+      window.location.reload();
+    }
   }
 
   render() {
@@ -71,8 +81,8 @@ export default class BoardChef extends Component {
                                              <td> {order.product.name}</td>
                                              <td> {order.quantity} {order.product.unit}</td>                                       
                                              <td>
-                                             <button onClick={ () => this.cookedOrder(order.order.id)} className="btn btn-success">Cooked </button>                                            
-                                                
+                                             <button onClick={ () => this.cookedOrder(order.order.id)} className="btn btn-success">Cooked </button> 
+                                             <button style={{marginLeft: "10px"}} onClick={ () => this.cancelOrder(order.order.id)} className="btn btn-danger">Cancel </button>                                           
                                              </td>
                                       </tr>
                                     )

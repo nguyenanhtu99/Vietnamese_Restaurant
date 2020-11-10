@@ -11,5 +11,9 @@ class OrderService {
     getAllOrder(){
         return axios.get(API_URL + 'all', { headers: authHeader() });
     }
+
+    deleteOrder(id){
+        return axios.delete(API_URL + id, { headers: authHeader() })
+    }
 }
 export default new OrderService();

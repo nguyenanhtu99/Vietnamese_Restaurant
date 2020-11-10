@@ -48,8 +48,11 @@ export default class BoardCashier extends Component {
   }
 
   paidOrder(id){
-    userService.paidOrder(id);
-    window.location.reload();
+    var result = window.confirm("Is this order paid?");
+    if (result) {
+      userService.paidOrder(id);
+      window.location.reload();
+    }
   }
 
   render() {

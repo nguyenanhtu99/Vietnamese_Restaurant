@@ -37,8 +37,11 @@ export default class BoardWaiter extends Component {
   }
 
   servedOrder(id){
+    var result = window.confirm("Is this dish served?");
+    if (result) {
     userService.servedOrder(id);
     window.location.reload();
+    }
   }
 
   placeOrder(){
@@ -75,7 +78,7 @@ export default class BoardWaiter extends Component {
                                              <td> {order.product.name}</td>
                                              <td> {order.quantity} {order.product.unit}</td>                                     
                                              <td>
-                                                <button onClick={ () => this.servedOrder(order.id.orderId)} className="btn btn-success">Served </button>                                                     
+                                                <button onClick={ () => this.servedOrder(order.order.id)} className="btn btn-success">Served </button>                                                     
                                              </td>
                                       </tr>
                                     )

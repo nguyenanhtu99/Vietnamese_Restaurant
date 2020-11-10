@@ -44,9 +44,12 @@ export default class BoardManager extends Component {
   }
 
   deleteUser(id){
-    authService.deleteUser(id).then(res => {
-      this.setState({users: this.state.users.filter(user => user.id !== id)});
-    })
+    var result = window.confirm("Want to delete?");
+    if (result) {
+      authService.deleteUser(id).then(res => {
+        this.setState({users: this.state.users.filter(user => user.id !== id)});
+      })
+    }
   }
 
   render() {

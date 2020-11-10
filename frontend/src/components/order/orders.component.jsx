@@ -30,17 +30,14 @@ export default class Orders extends Component {
         });
       }
     );
-    
-    
   }
 
   deleteOrder(id){
-    // userService.servedOrder(id);
-    // window.location.reload();
-  }
-
-  placeOrder(){
-    this.props.history.push('/order/add');
+    var result = window.confirm("Want to delete?");
+    if (result) {
+        orderService.deleteOrder(id);
+        window.location.reload();
+    }
   }
 
   render() {

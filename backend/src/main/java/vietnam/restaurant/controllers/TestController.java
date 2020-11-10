@@ -72,6 +72,18 @@ public class TestController {
 		return ResponseEntity.ok(new MessageResponse("Order updated successfully!"));
 	}
 
+    @PutMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('CHEF') or hasRole('ADMIN')")
+    public ResponseEntity<?> cancel(@PathVariable Long id){
+        var order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Error: Product not found."));
+        order.setUpdatedOn(formatter.format(date));
+        order.setStatus(EOrderStatus.CANCELED);
+        orderRepository.save(order);
+
+        return ResponseEntity.ok(new MessageResponse("Order updated successfully!"));
+    }
+
 
 	@GetMapping("/cashier")
 	@PreAuthorize("hasRole('CASHIER') or hasRole('ADMIN')")

@@ -45,6 +45,7 @@ class App extends Component {
         showChefBoard: (user.roles.includes("ROLE_CHEF") || user.roles.includes("ROLE_ADMIN")),
         showManagerBoard: (user.roles.includes("ROLE_MANAGER") || user.roles.includes("ROLE_ADMIN")),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        showOrdersBoard: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER"))
       });
     }
   }
@@ -54,7 +55,7 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showAdminBoard } = this.state;
+    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showAdminBoard, showOrdersBoard } = this.state;
 
     return (
       <div className="background">
@@ -109,7 +110,15 @@ class App extends Component {
               </li>
             )}
 
-            {showAdminBoard && (
+            {showOrdersBoard && (
+              <li className="nav-item">
+                <Link to={"/orders"} className="nav-link">
+                  Orders
+                </Link>
+              </li>
+            )}
+
+            {showOrdersBoard && (
               <li className="nav-item">
                 <Link to={"/product"} className="nav-link">
                   Product

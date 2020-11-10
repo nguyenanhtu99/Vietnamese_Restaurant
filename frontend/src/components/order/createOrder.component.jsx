@@ -53,10 +53,6 @@ export default class createOrder extends Component {
           products: response.data,
           content: "Manager"
         });
-        // console.log(this.state.products);
-        // this.state.products.forEach(product => {
-        //   this.state.product_ids.push(product.id);
-        // });
       },
       error => {
         this.setState({
@@ -115,27 +111,30 @@ export default class createOrder extends Component {
                             note: this.state.note,
                             product_ids: this.state.product_ids,
                             quantities: this.state.quantities}
-      orderService.placeOrder(orderRequest).then(
-        response => {
-          this.setState({
-            message: response.data.message,
-            successful: true
-          });
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+        var result = window.confirm("Want to place this order?");
+        if (result) {
+          orderService.placeOrder(orderRequest).then(
+            response => {
+              this.setState({
+                message: response.data.message,
+                successful: true
+              });
+            },
+            error => {
+              const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString();
 
-          this.setState({
-            successful: false,
-            message: resMessage
-          });
+              this.setState({
+                successful: false,
+                message: resMessage
+              });
+            }
+          );
         }
-      );
     }
   }
 

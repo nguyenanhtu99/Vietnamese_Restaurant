@@ -36,6 +36,10 @@ class UserService {
     return axios.put(API_URL + "cooked/" + id, id, { headers: authHeader() })
   }
 
+  cancelOrder(id){
+    return axios.put(API_URL + "cancel/" + id, id, { headers: authHeader() })
+  }
+
   getManagerBoard() {
     return axios.get(API_URL + 'manager', { headers: authHeader() });
   }
