@@ -34,6 +34,7 @@ export default class BoardManager extends Component {
         });
       }
     );
+    console.log(this.state.products);
   }
 
   updateProduct(id){
@@ -56,6 +57,7 @@ export default class BoardManager extends Component {
                     <table className = "table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th>Picture</th>
                                 <th>Product Name</th>
                                 <th>SKU</th>
                                 <th>Price</th>
@@ -67,6 +69,9 @@ export default class BoardManager extends Component {
                             {
                                 this.state.products.map(item =>
                                     <tr key = {item.id}>
+                                            <td> <img alt="picture" src={item.pictureUri === null ? 
+                                                    "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : item.pictureUri
+                                                    } height="200px" width="200px" /> </td>
                                             <td> {item.name} </td>   
                                             <td> {item.sku}</td>
                                             <td> {item.price}</td>
@@ -82,7 +87,7 @@ export default class BoardManager extends Component {
                     </table>
                     
                     <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>
-                        Add new product
+                        <span>Add new product</span>
                     </button>
                 </div>
             }

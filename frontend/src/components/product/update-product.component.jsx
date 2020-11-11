@@ -45,7 +45,7 @@ export default class UpdateProduct extends Component {
       unit: "ITEM",
       isShowOnHomepage: false,
       isEnteredPrice: false,
-      picture: null,
+      pictureId: null,
       picturePreviewUrl: null,
       successful: false,
       message: "",
@@ -53,18 +53,20 @@ export default class UpdateProduct extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount(){    
     ProductService.getProductById(this.state.id).then(
-        response => {                      
-            this.setState({
-                name: response.data.name,
-                sku: response.data.sku,
-                price: response.data.price,
-                unit: response.data.unit,
-                isShowOnHomepage: response.data.showOnHomepage,
-                isEnteredPrice: response.data.enteredPrice
-            });
-        },
+        response => {                
+          this.setState({
+              name: response.data.name,
+              sku: response.data.sku,
+              price: response.data.price,
+              unit: response.data.unit,
+              isShowOnHomepage: response.data.showOnHomepage,
+              isEnteredPrice: response.data.enteredPrice,
+              pictureId: response.data.pictureId,
+              picturePreviewUrl: response.data.pictureUri      
+          });
+        },        
         error => {
             this.setState({ redirect: "/home" });
         }        
@@ -110,16 +112,16 @@ export default class UpdateProduct extends Component {
 
   onChangePicture(e){
     e.preventDefault();
-    this.setState({
-        picture: e.target.files[0]
-    });
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
     ProductService.uploadPicture(
       formData
       ).then(
       response => {
-        alert(response.data.message);
+        this.setState({
+          pictureId: response.data
+        });
+        alert("Picture uploaded successfully!");
       },
       error => {
         const resMessage =
@@ -157,17 +159,12 @@ export default class UpdateProduct extends Component {
         price: this.state.price,
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
-        isEnteredPrice: this.state.isEnteredPricee
-      };
-      let formData = null;
-      if(this.state.picture !== null){
-        formData = new FormData();
-        formData.append('pictureFile', this.state.picture);
-      }      
+        isEnteredPrice: this.state.isEnteredPrice,
+        pictureId: this.state.pictureId
+      };  
       ProductService.updateProduct(
         this.state.id,
-        productRequest, 
-        formData
+        productRequest
       ).then(
         response => {
           this.setState({

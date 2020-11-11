@@ -44,7 +44,7 @@ export default class NewProduct extends Component {
       unit: "ITEM",
       isShowOnHomepage: false,
       isEnteredPrice: false,
-      picture: null,
+      pictureId: null,
       picturePreviewUrl: null,
       successful: false,
       message: "",
@@ -90,16 +90,16 @@ export default class NewProduct extends Component {
 
   onChangePicture(e){
     e.preventDefault();
-    this.setState({
-        picture: e.target.files[0]
-    });
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
     ProductService.uploadPicture(
       formData
       ).then(
       response => {
-        alert(response.data.message);
+        this.setState({
+          pictureId: response.data
+        });
+        alert("Picture uploaded successfully!");
       },
       error => {
         const resMessage =
@@ -138,7 +138,7 @@ export default class NewProduct extends Component {
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
         isEnteredPrice: this.state.isEnteredPrice,
-        picture: this.state.picture
+        pictureId: this.state.pictureId
       };
 
       ProductService.addNewProduct(

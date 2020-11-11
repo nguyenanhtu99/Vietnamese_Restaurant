@@ -23,9 +23,6 @@ public class Picture {
     @Lob
     private byte[] picture;
 
-    @Column(name = "picture_url")
-    private String pictureUrl;
-
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "picture")
 //    private Set<Product> products;
 
@@ -60,14 +57,6 @@ public class Picture {
 //    public void setProducts(Set<Product> products) {
 //        this.products = products;
 //    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
 
     public String getType() {
         return type;

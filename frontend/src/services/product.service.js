@@ -15,13 +15,17 @@ class ProductService {
         return axios.post(API_URL + "add", request);
     }
 
-    updateProduct(id, request, formData) {
-        console.log(formData);
-        return axios.put(API_URL + "edit/"+ id, request, formData);
+    updateProduct(id, request) {
+        console.log(request);
+        return axios.put(API_URL + "edit/"+ id, request);
     }
 
     uploadPicture(formData){
         return axios.post(API_URL + "picture/upload", formData);
+    }
+
+    getPictureById(id){
+        return axios.get(API_URL + "picture/" + id);
     }
     
     deleteProduct(id) {
