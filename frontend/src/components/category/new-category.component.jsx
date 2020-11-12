@@ -42,7 +42,7 @@ export default class NewCategory extends Component {
   }
 
   componentDidMount(){
-    CategoryService.getListParent(0).then(
+    CategoryService.getListParent(-1).then(
       response => {
         this.setState({
           listCategories: response.data

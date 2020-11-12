@@ -10,6 +10,7 @@ import vietnam.restaurant.loaders.responses.ProductResponse;
 import vietnam.restaurant.models.media.Picture;
 import vietnam.restaurant.models.products.Product;
 import vietnam.restaurant.repository.media.PictureRepository;
+import vietnam.restaurant.repository.products.CategoryRepository;
 import vietnam.restaurant.repository.products.ProductRepository;
 import vietnam.restaurant.services.products.ProductService;
 
@@ -27,6 +28,9 @@ public class ProductController {
     PictureRepository pictureRepository;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
     ProductService productService;
 
     //Picture
@@ -41,6 +45,28 @@ public class ProductController {
     @GetMapping("/all")
     public List<?> getAllProducts(){
         var products = productRepository.findAll();
+        List<ProductResponse> responses = new ArrayList<>();
+        products.forEach((product) -> {
+            responses.add(productService.convertProductToResponse(product));
+        });
+        return responses;
+    }
+
+    @GetMapping("/all/{categoryId}")
+    public List<?> getAllProductsByCategoryId(@PathVariable Long categoryId){
+        var products = new ArrayList<Product>();
+        if(categoryId == -1)
+            products.addAll(productRepository.findAll());
+        else if(categoryId == 0)
+            productRepository.findAll().forEach(product -> {
+                if(product.getCategory() == null)
+                    products.add(product);
+            });
+        else {
+            var category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new RuntimeException("Error: Category not found."));
+            products.addAll(productService.getAllProductsByCategory(category));
+        }
         List<ProductResponse> responses = new ArrayList<>();
         products.forEach((product) -> {
             responses.add(productService.convertProductToResponse(product));
@@ -78,7 +104,13 @@ public class ProductController {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: Product not found."));
 
+        //delete
+        if(product.getPicture() != null)
+            pictureRepository.delete(product.getPicture());
+        if(product.getCategory() != null)
+            product.setCategory(null);
         productRepository.delete(product);
+
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);

@@ -6,6 +6,10 @@ class ProductService {
     getAllProducts(){
         return axios.get(API_URL + "all");
     }
+
+    getAllProductsByCategory(categoryId){
+        return axios.get(API_URL + "all/" + categoryId);
+    }
     getProductById(id){
         return axios.get(API_URL + id);
     }

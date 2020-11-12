@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import ProductService from "../../services/product.service";
+import CategoryService from "../../services/category.service";
 
 const required = value => {
   if (!value) {
@@ -36,6 +37,7 @@ export default class UpdateProduct extends Component {
     this.onChangeShowOnHomepage = this.onChangeShowOnHomepage.bind(this);
     this.onChangeEnteredPrice = this.onChangeEnteredPrice.bind(this);
     this.onChangePicture = this.onChangePicture.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
 
     this.state = {
       id: parseInt(this.props.match.params.id),
@@ -49,11 +51,20 @@ export default class UpdateProduct extends Component {
       picturePreviewUrl: null,
       successful: false,
       message: "",
-      listUnit: ["ITEM", "PIECE", "SET", "KG"]
+      listUnit: ["ITEM", "PIECE", "SET", "KG"],
+      listCategories: []
     };
   }
 
-  componentDidMount(){    
+  componentDidMount(){
+    CategoryService.getListParent(-1).then(
+      response => {
+        this.setState({
+          listCategories: response.data
+        });
+      },
+      error => {}
+    );    
     ProductService.getProductById(this.state.id).then(
         response => {                
           this.setState({
@@ -64,7 +75,8 @@ export default class UpdateProduct extends Component {
               isShowOnHomepage: response.data.showOnHomepage,
               isEnteredPrice: response.data.enteredPrice,
               pictureId: response.data.pictureId,
-              picturePreviewUrl: response.data.pictureUri      
+              picturePreviewUrl: response.data.pictureUri,
+              categoryId: response.data.categoryId      
           });
         },        
         error => {
@@ -108,6 +120,13 @@ export default class UpdateProduct extends Component {
   onChangeEnteredPrice(){
     this.setState({
         isEnteredPrice: !this.state.isEnteredPrice
+    });
+  }
+
+  onChangeCategory(e)
+  {
+    this.setState({
+      categoryId: e.target.value
     });
   }
 
@@ -161,7 +180,8 @@ export default class UpdateProduct extends Component {
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
         isEnteredPrice: this.state.isEnteredPrice,
-        pictureId: this.state.pictureId
+        pictureId: this.state.pictureId,
+        categoryId: this.state.categoryId
       };  
       ProductService.updateProduct(
         this.state.id,
@@ -202,6 +222,24 @@ export default class UpdateProduct extends Component {
           >
             {!this.state.successful && (
               <div>
+
+              <div className="form-group">
+                  <label htmlFor="categoryId">Category</label>
+                  <select
+                    className="form-control"
+                    name="categoryId"
+                    value={this.state.categoryId}
+                    onChange={this.onChangeCategory}
+                    >
+                  {
+                      this.state.listCategories.map(item =>{
+                          return (
+                            <option key={item.id} value={item.id}> {item.name} </option>
+                          )
+                      })
+                  }
+                  </select>
+              </div>
                 <div className="form-group">
                   <label htmlFor="name">Product Name</label>
                   <Input

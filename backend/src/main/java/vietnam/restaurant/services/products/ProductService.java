@@ -4,10 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vietnam.restaurant.loaders.requests.ProductRequest;
 import vietnam.restaurant.loaders.responses.ProductResponse;
+import vietnam.restaurant.models.products.Category;
 import vietnam.restaurant.models.products.Product;
 import vietnam.restaurant.repository.media.PictureRepository;
+import vietnam.restaurant.repository.products.CategoryRepository;
 import vietnam.restaurant.repository.products.ProductRepository;
 import vietnam.restaurant.services.media.PictureService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -18,14 +23,33 @@ public class ProductService {
     PictureRepository pictureRepository;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
     PictureService pictureService;
 
-    public Product convertRequestToProduct(Product prd, ProductRequest productRequest){
+    @Autowired
+    CategoryService categoryService;
+
+    public List<Product> getAllProductsByCategory(Category category){
+        var listProducts = new ArrayList<Product>();
+        productRepository.findAll().forEach(product -> {
+            if(product.getCategory() == category)
+                listProducts.add(product);
+        });
+
+        categoryService.getAllSubCategories(category).forEach(subCategory -> {
+            listProducts.addAll(getAllProductsByCategory(subCategory));
+        });
+
+        return listProducts;
+    }
+
+    public Product convertRequestToProduct(Product prd, ProductRequest productRequest) {
         var product = new Product();
-        if(prd != null){
+        if(prd != null) {
             product.setId(prd.getId());
-            if(prd.getPicture() != null
-                && prd.getPicture().getId() != productRequest.getPictureId()) {
+            if(prd.getPicture() != null && prd.getPicture().getId() != productRequest.getPictureId()) {
                 pictureRepository.delete(prd.getPicture());
             }
         }
@@ -41,6 +65,14 @@ public class ProductService {
                     .orElseThrow(() -> new RuntimeException("Error: Picture not found."));
             product.setPicture(picture);
         }
+        if(productRequest.getCategoryId() != null && productRequest.getCategoryId() > 0){
+            var category = categoryRepository.findById(productRequest.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Error: Category not found."));
+            product.setCategory(category);
+        }
+        else {
+            product.setCategory(null);
+        }
         return product;
     }
 
@@ -52,8 +84,12 @@ public class ProductService {
             productResponse.setPictureId(product.getPicture().getId());
             productResponse.setPictureUri(pictureService.getPictureUrl(product.getPicture()));
         }
-        if(product.getCategory() != null)
+        if(product.getCategory() != null) {
             productResponse.setCategoryId(product.getCategory().getId());
+        }
+        else {
+            productResponse.setCategoryId((long)0);
+        }
         return productResponse;
     }
 }

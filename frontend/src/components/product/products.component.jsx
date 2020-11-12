@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import authService from "../../services/auth.service";
 
 import ProductService from "../../services/product.service";
+import CategoryService from "../../services/category.service";
 
 export default class Products extends Component {
   constructor(props) {
@@ -9,6 +10,8 @@ export default class Products extends Component {
 
     this.state = {
       products: [],
+      categories: [],
+      categoryId: -1,
       currentUser: authService.getCurrentUser(),
       content:''
     };
@@ -16,6 +19,15 @@ export default class Products extends Component {
   }
 
   componentDidMount() {
+    CategoryService.getListParent(-1).then(
+      response => {
+        this.setState({
+          categories: response.data
+        });
+      },
+      error => {}
+    );
+
     ProductService.getAllProducts().then(
       response => {
         this.setState({
@@ -42,7 +54,9 @@ export default class Products extends Component {
 
   deleteProduct(id){
     ProductService.deleteProduct(id).then(res => {
-      this.setState({products: this.state.products.filter(item => item.id !== id)});
+      this.setState({
+        products: this.state.products.filter(item => item.id !== id)
+      });
     })
   }
 
@@ -52,10 +66,13 @@ export default class Products extends Component {
           <h3>{this.state.content}</h3>
 
           {this.state.content === "Product" &&
-                <div className = "row">
+                <div className = "row">                  
+                    <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>New Product</button>
+                    
                     <table className = "table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th>Category</th>
                                 <th>Picture</th>
                                 <th>Product Name</th>
                                 <th>SKU</th>
@@ -68,6 +85,7 @@ export default class Products extends Component {
                             {
                                 this.state.products.map(item =>
                                     <tr key = {item.id}>
+                                            <td> {item.categoryId} </td>
                                             <td> <img alt="pic" src={item.pictureUri === null ? 
                                                     "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : item.pictureUri
                                                     } height="200px" width="200px" /> </td>
@@ -85,9 +103,6 @@ export default class Products extends Component {
                         </tbody>
                     </table>
                     
-                    <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>
-                        <span>Add new product</span>
-                    </button>
                 </div>
             }
       </div>

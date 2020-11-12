@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import ProductService from "../../services/product.service";
+import CategoryService from "../../services/category.service";
 
 const required = value => {
   if (!value) {
@@ -36,6 +37,7 @@ export default class NewProduct extends Component {
     this.onChangeShowOnHomepage = this.onChangeShowOnHomepage.bind(this);
     this.onChangeEnteredPrice = this.onChangeEnteredPrice.bind(this);
     this.onChangePicture = this.onChangePicture.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
 
     this.state = {
       name: "",
@@ -46,10 +48,23 @@ export default class NewProduct extends Component {
       isEnteredPrice: false,
       pictureId: null,
       picturePreviewUrl: null,
+      categoryId: null,
       successful: false,
       message: "",
-      listUnit: ["ITEM", "PIECE", "SET", "KG"]
+      listUnit: ["ITEM", "PIECE", "SET", "KG"],
+      listCategories: []
     };
+  }
+
+  componentDidMount(){
+    CategoryService.getListParent(-1).then(
+      response => {
+        this.setState({
+          listCategories: response.data
+        });
+      },
+      error => {}
+    );
   }
 
   onChangeName(e) {
@@ -85,6 +100,13 @@ export default class NewProduct extends Component {
   onChangeEnteredPrice(){
     this.setState({
         isEnteredPrice: !this.state.isEnteredPrice
+    });
+  }
+
+  onChangeCategory(e)
+  {
+    this.setState({
+      categoryId: e.target.value
     });
   }
 
@@ -138,7 +160,8 @@ export default class NewProduct extends Component {
         unit: this.state.unit,
         isShowOnHomepage: this.state.isShowOnHomepage, 
         isEnteredPrice: this.state.isEnteredPrice,
-        pictureId: this.state.pictureId
+        pictureId: this.state.pictureId,
+        categoryId: this.state.categoryId
       };
 
       ProductService.addNewProduct(
@@ -179,6 +202,24 @@ export default class NewProduct extends Component {
           >
             {!this.state.successful && (
               <div>
+                <div className="form-group">
+                    <label htmlFor="categoryId">Category</label>
+                    <select
+                      className="form-control"
+                      name="categoryId"
+                      value={this.state.categoryId}
+                      onChange={this.onChangeCategory}
+                      >
+                    {
+                        this.state.listCategories.map(item =>{
+                            return (
+                              <option key={item.id} value={item.id}> {item.name} </option>
+                            )
+                        })
+                    }
+                    </select>
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="name">Product Name</label>
                   <Input
@@ -265,7 +306,7 @@ export default class NewProduct extends Component {
                       "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : this.state.picturePreviewUrl
                       } height="200px" width="200px"/>
                 </div>
-                
+
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">Add New Product</button>
                 </div>

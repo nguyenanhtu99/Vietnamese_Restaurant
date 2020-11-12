@@ -35,8 +35,8 @@ public class CategoryController {
     @GetMapping("/all/{id}")
     public List<CategoryItem> getListParentCategories(@PathVariable Long id){
         List<CategoryItem> treeCategories = new ArrayList<CategoryItem>();
-        treeCategories.add(new CategoryItem((long) 0, "None", 0));
-        return categoryService.getAllCategories(id);
+        treeCategories.addAll(categoryService.getAllCategories(id));
+        return treeCategories;
     }
 
     @GetMapping("/{id}")
@@ -75,7 +75,9 @@ public class CategoryController {
             categoryRepository.save(item);
         });
         //delete
+        category.setParentCategory(null);
         categoryRepository.delete(category);
+
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);

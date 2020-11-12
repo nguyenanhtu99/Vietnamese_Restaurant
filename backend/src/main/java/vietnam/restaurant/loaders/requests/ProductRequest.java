@@ -35,6 +35,8 @@ public class ProductRequest {
 
     Long pictureId;
 
+    Long categoryId;
+
     public String getName() {
         return name;
     }
@@ -89,5 +91,13 @@ public class ProductRequest {
 
     public void setPictureId(Long pictureId) {
         this.pictureId = pictureId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

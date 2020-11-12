@@ -52,7 +52,8 @@ export default class Categories extends Component {
           <h3>{this.state.content}</h3>
 
           {this.state.content === "Category" &&
-                <div className = "row">
+                <div className = "row">                    
+                  <button className = "btn btn-primary" onClick = {() => this.props.history.push("/category/add")}>New Category</button>
                     <table className = "table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -74,10 +75,6 @@ export default class Categories extends Component {
                             }
                         </tbody>
                     </table>
-                    
-                    <button className = "btn btn-primary" onClick = {() => this.props.history.push("/category/add")}>
-                        <span>Add new category</span>
-                    </button>
                 </div>
             }
       </div>

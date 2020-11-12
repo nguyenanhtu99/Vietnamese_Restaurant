@@ -34,18 +34,18 @@ public class CategoryService {
         //Find sub item
         categoryRepository.findAll().forEach(category -> {
             if(category.getParentCategory() == null)
-                tree.add(convertCategoryToTreeItem(category, 0));
+                tree.add(getAllSubTreeItem(category, 0));
         });
         return tree;
     }
 
-    public CategoryTreeItem convertCategoryToTreeItem(Category item, int level){
+    public CategoryTreeItem getAllSubTreeItem(Category item, int level){
         var treeItem = new CategoryTreeItem(item.getId(), item.getName(), level);
         // Get all sub item
         var subList = new ArrayList<CategoryTreeItem>();
         categoryRepository.findAll().forEach(category -> {
             if(category.getParentCategory() == item)
-                subList.add(convertCategoryToTreeItem(category, level + 1));
+                subList.add(getAllSubTreeItem(category, level + 1));
         });
         treeItem.setSubCategories(subList);
         return treeItem;
@@ -54,7 +54,7 @@ public class CategoryService {
     public List<CategoryItem> getAllCategories(Long id){
         //Level 0
         var tree = new ArrayList<CategoryItem>();
-        if(id > 0){
+        if (id != 0) {
             tree.add(new CategoryItem((long)0, "None", 0));
         }
         //Find sub item

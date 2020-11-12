@@ -54,39 +54,38 @@ export default class BoardWaiter extends Component {
           <h3>{this.state.content}</h3>
 
           {this.state.content === "Waiter" &&
-                 <div className = "row">
-                   <button onClick={ () => this.placeOrder()} className="btn btn-primary">PLACE ORDER </button>
-                   
-                        <table className = "table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th> Table</th>
-                                    <th> Created On</th>
-                                    <th> Cooked At</th>
-                                    <th> Product</th>
-                                    <th> Quantity</th>
-                                    <th> Actions</th>
+              <div className = "row">                    
+                  <button onClick={ () => this.placeOrder()} className="btn btn-primary">New order</button> 
+
+                  <table className = "table table-striped table-bordered">
+                      <thead>
+                          <tr>
+                              <th> Table</th>
+                              <th> Created On</th>
+                              <th> Cooked At</th>
+                              <th> Product</th>
+                              <th> Quantity</th>
+                              <th> Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {
+                              this.state.orders.map(order =>                     
+                                <tr key = {order.order.id}>
+                                        <td> {order.order.position} </td>   
+                                        <td> {order.order.createdOn}</td>
+                                        <td> {order.order.updatedOn}</td>
+                                        <td> {order.product.name}</td>
+                                        <td> {order.quantity} {order.product.unit}</td>                                     
+                                        <td>
+                                          <button onClick={ () => this.servedOrder(order.order.id)} className="btn btn-success">Served </button>                                                     
+                                        </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    this.state.orders.map(order =>                     
-                                      <tr key = {order.order.id}>
-                                             <td> {order.order.position} </td>   
-                                             <td> {order.order.createdOn}</td>
-                                             <td> {order.order.updatedOn}</td>
-                                             <td> {order.product.name}</td>
-                                             <td> {order.quantity} {order.product.unit}</td>                                     
-                                             <td>
-                                                <button onClick={ () => this.servedOrder(order.order.id)} className="btn btn-success">Served </button>                                                     
-                                             </td>
-                                      </tr>
-                                    )
-                                }
-                            </tbody>
-                        </table>
-                    
-                 </div>
+                              )
+                          }
+                      </tbody>
+                  </table>
+              </div>
             }
       </div>
     );
