@@ -2,6 +2,7 @@ package vietnam.restaurant.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vietnam.restaurant.loaders.requests.ProductRequest;
@@ -34,6 +35,7 @@ public class ProductController {
     ProductService productService;
 
     //Picture
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     @PostMapping(value = "/picture/upload")
     public ResponseEntity<?> uploadPicture(@RequestParam MultipartFile file) throws IOException {
         var picture = new Picture(file.getBytes(), file.getContentType());
@@ -83,23 +85,27 @@ public class ProductController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<?> addNewProduct(@RequestBody ProductRequest productRequest) {
-        var product = productService.convertRequestToProduct(null, productRequest);
+        Product product = productService.convertRequestToProduct(null, productRequest);
         productRepository.save(product);
         return ResponseEntity.ok(new MessageResponse("Product added successfully!"));
     }
 
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@PathVariable Long id,
                                            @RequestBody ProductRequest productRequest) {
-        var prd = productRepository.findById(id)
+        Product prd = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: Product not found."));
+        var pic = prd.getPicture();
         var product = productService.convertRequestToProduct(prd, productRequest);
         productRepository.save(product);
         return ResponseEntity.ok(new MessageResponse("Product updated successfully!"));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> deleteProduct(@PathVariable Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: Product not found."));

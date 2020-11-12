@@ -50,7 +50,9 @@ public class ProductService {
         if(prd != null) {
             product.setId(prd.getId());
             if(prd.getPicture() != null && prd.getPicture().getId() != productRequest.getPictureId()) {
-                pictureRepository.delete(prd.getPicture());
+                var pic = prd.getPicture();
+                prd.setPicture(null);
+                pictureRepository.delete(pic);
             }
         }
         product.setName(productRequest.getName());
