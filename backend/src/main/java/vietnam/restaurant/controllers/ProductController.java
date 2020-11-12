@@ -98,7 +98,6 @@ public class ProductController {
                                            @RequestBody ProductRequest productRequest) {
         Product prd = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: Product not found."));
-        var pic = prd.getPicture();
         var product = productService.convertRequestToProduct(prd, productRequest);
         productRepository.save(product);
         return ResponseEntity.ok(new MessageResponse("Product updated successfully!"));
