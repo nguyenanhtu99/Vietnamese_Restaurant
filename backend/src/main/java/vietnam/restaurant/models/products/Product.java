@@ -1,5 +1,6 @@
 package vietnam.restaurant.models.products;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import vietnam.restaurant.models.media.Picture;
 import vietnam.restaurant.models.orders.OrderProduct;
 
@@ -35,6 +36,7 @@ public class Product {
     @Column(name = "unit", length = 20)
     private EUnit unit;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "picture_id")
     private Picture picture;
