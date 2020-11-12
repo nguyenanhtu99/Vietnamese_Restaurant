@@ -1,5 +1,7 @@
 package vietnam.restaurant.models.products;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ public class Category {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
