@@ -72,7 +72,6 @@ export default class Products extends Component {
                     <table className = "table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Category</th>
                                 <th>Picture</th>
                                 <th>Product Name</th>
                                 <th>SKU</th>
@@ -85,7 +84,6 @@ export default class Products extends Component {
                             {
                                 this.state.products.map(item =>
                                     <tr key = {item.id}>
-                                            <td> {item.categoryId} </td>
                                             <td> <img alt="pic" src={item.pictureUri === null ? 
                                                     "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : item.pictureUri
                                                     } height="200px" width="200px" /> </td>
