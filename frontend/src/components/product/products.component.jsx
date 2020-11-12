@@ -3,7 +3,7 @@ import authService from "../../services/auth.service";
 
 import ProductService from "../../services/product.service";
 
-export default class BoardManager extends Component {
+export default class Products extends Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,6 @@ export default class BoardManager extends Component {
         });
       }
     );
-    console.log(this.state.products);
   }
 
   updateProduct(id){
@@ -69,7 +68,7 @@ export default class BoardManager extends Component {
                             {
                                 this.state.products.map(item =>
                                     <tr key = {item.id}>
-                                            <td> <img alt="picture" src={item.pictureUri === null ? 
+                                            <td> <img alt="pic" src={item.pictureUri === null ? 
                                                     "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : item.pictureUri
                                                     } height="200px" width="200px" /> </td>
                                             <td> {item.name} </td>   

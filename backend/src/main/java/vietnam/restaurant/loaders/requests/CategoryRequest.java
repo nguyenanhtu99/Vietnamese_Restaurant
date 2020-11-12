@@ -4,9 +4,9 @@ import javax.validation.constraints.NotBlank;
 
 public class CategoryRequest {
     @NotBlank
-    private String name;
+    String name;
 
-    private Long parentId;
+    Long parentId;
 
     public String getName() {
         return name;

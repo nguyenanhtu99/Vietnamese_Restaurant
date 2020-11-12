@@ -38,7 +38,7 @@ export default class UpdateProduct extends Component {
     this.onChangePicture = this.onChangePicture.bind(this);
 
     this.state = {
-        id: parseInt(this.props.match.params.id),
+      id: parseInt(this.props.match.params.id),
       name: "",
       sku: "",
       price: "0",
@@ -68,7 +68,8 @@ export default class UpdateProduct extends Component {
           });
         },        
         error => {
-            this.setState({ redirect: "/home" });
+          this.props.history.push("/product");
+          alert("Product not found");
         }        
     );
   }

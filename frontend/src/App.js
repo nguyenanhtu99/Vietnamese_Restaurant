@@ -9,7 +9,10 @@ import Login from "./components/user/login.component.jsx";
 import Register from "./components/user/register.component.jsx";
 import Home from "./components/home.component.jsx";
 import Profile from "./components/user/profile.component.jsx";
-import Product from "./components/product/product.component.jsx";
+import Categories from "./components/category/categories.component.jsx";
+import NewCategory from "./components/category/new-category.component.jsx";
+import UpdateCategory from "./components/category/update-category.component.jsx";
+import Products from "./components/product/products.component.jsx";
 import NewProduct from "./components/product/new-product.component.jsx";
 import UpdateProduct from "./components/product/update-product.component.jsx";
 import BoardUser from "./components/board/board-user.component.jsx";
@@ -61,14 +64,9 @@ class App extends Component {
       <div className="background">
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
-            Vietnamese Restaurant
+            Restaurant
           </Link>
           <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
 
             {showAdminBoard && (
               <li className="nav-item">
@@ -126,6 +124,14 @@ class App extends Component {
               </li>
             )}
 
+            {showOrdersBoard && (
+              <li className="nav-item">
+                <Link to={"/category"} className="nav-link">
+                  Category
+                </Link>
+              </li>
+            )}
+
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
@@ -171,7 +177,10 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/product" component={Product} />
+            <Route exact path="/category" component={Categories} />
+            <Route exact path="/category/add" component={NewCategory} />
+            <Route exact path="/category/:id" component={UpdateCategory} />
+            <Route exact path="/product" component={Products} />
             <Route exact path="/product/add" component={NewProduct} />
             <Route exact path="/product/:id" component={UpdateProduct} />
             <Route exact path="/order/add" component={createOrder} />

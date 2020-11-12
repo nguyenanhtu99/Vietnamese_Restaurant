@@ -265,7 +265,7 @@ export default class NewProduct extends Component {
                       "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : this.state.picturePreviewUrl
                       } height="200px" width="200px"/>
                 </div>
-
+                
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">Add New Product</button>
                 </div>
