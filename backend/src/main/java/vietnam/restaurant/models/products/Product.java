@@ -41,6 +41,7 @@ public class Product {
     @JoinColumn(name = "picture_id")
     private Picture picture;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
