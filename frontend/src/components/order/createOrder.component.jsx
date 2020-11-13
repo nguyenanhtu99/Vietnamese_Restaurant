@@ -6,6 +6,7 @@ import CheckButton from "react-validation/build/button";
 import productService from "../../services/product.service";
 import orderService from "../../services/order.service";
 import authService from "../../services/auth.service";
+import categoryService from "../../services/category.service";
 
 const required = value => {
   if (!value) {
@@ -33,6 +34,9 @@ export default class createOrder extends Component {
     this.handlePlaceOrder = this.handlePlaceOrder.bind(this);
     this.onChangePosition = this.onChangePosition.bind(this);
     this.onChangeNote = this.onChangeNote.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
+    this.addProduct = this.addProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
 
     this.state = {
       user_id: authService.getCurrentUser().id,
@@ -42,7 +46,12 @@ export default class createOrder extends Component {
       position: 0,
       note: "",
       successful: false,
-      message: ""
+      message: "",
+      listCategories: [],
+      listProduct: [],
+      listSearch: [],
+      showSearchProduct: false,
+      showListProduct: false
     };
   }
 
@@ -51,7 +60,7 @@ export default class createOrder extends Component {
       response => {
         this.setState({
           products: response.data,
-          content: "Manager"
+          content: "New Order"
         });
       },
       error => {
@@ -65,6 +74,14 @@ export default class createOrder extends Component {
         });
       }
     );
+    categoryService.getAllCategories().then(
+      response => {
+        this.setState({
+          listCategories: response.data
+        });
+      },
+      error => {}
+    );
   }
 
   onChangePosition(e) {
@@ -77,6 +94,35 @@ export default class createOrder extends Component {
     this.setState({
       note: e.target.value
     });
+  }
+
+  addProduct(product){
+    if (!this.state.listProduct.find(item => item.id === product.id)){
+      this.state.listProduct.push(product)
+      this.setState({showListProduct: true})
+    }
+  }
+
+  deleteProduct(id){
+    let list = this.state.listProduct.filter(product => product.id !== id);
+    this.setState({listProduct: list});
+
+    let index = this.state.product_ids.indexOf(id.toString());
+
+    this.state.product_ids.splice(index, 1);
+    this.state.quantities.splice(index, 1);
+  }
+
+  onChangeCategory = event => {
+    let category_id = event.target.value;
+    
+    productService.getAllProducts().then(
+      response => {
+        this.setState({listSearch: response.data.filter(product => product.categoryId === parseInt(category_id)),
+                      showSearchProduct: true});
+      });
+
+    
   }
 
   onChangeQuantity = event => {
@@ -111,6 +157,7 @@ export default class createOrder extends Component {
                             note: this.state.note,
                             product_ids: this.state.product_ids,
                             quantities: this.state.quantities}
+
         var result = window.confirm("Want to place this order?");
         if (result) {
           orderService.placeOrder(orderRequest).then(
@@ -140,8 +187,9 @@ export default class createOrder extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
+      <div className="container">
+        
+        <div className="card col-8">
           <h3>New order</h3>
           <Form
             onSubmit={this.handlePlaceOrder}
@@ -151,40 +199,83 @@ export default class createOrder extends Component {
           >
             {!this.state.successful && (
               <div>
-                <div className="form-group">
-                  <label htmlFor="position">Table</label>
-                  <Input
-                    type="number"
-                    className="form-control"
-                    name="position"
-                    value={this.state.position}
-                    onChange={this.onChangePosition}
-                    validations={[required, vposition]}
-                  />
-                </div>
+                <div className="row">
+                  <div className="col-sm-2">
+                    <label htmlFor="position">Table</label>
+                    <Input
+                      type="number"
+                      className="form-control"
+                      name="position"
+                      value={this.state.position}
+                      onChange={this.onChangePosition}
+                      validations={[required, vposition]}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="note">Note</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="note"
-                    value={this.state.note}
-                    onChange={this.onChangeNote}
-                  />
+                  <div className="col-sm">
+                    <label htmlFor="note">Note</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="note"
+                      value={this.state.note}
+                      onChange={this.onChangeNote}
+                    />
+                  </div>
                 </div>
+              
+                <div className="row form-group">
 
-                <div className="form-group">
-                  <label htmlFor="quantities">Choose Products</label>
+                  <div className="col-sm-4">
+                      <div className="form-group">
+                        <label htmlFor="parentId">Category</label>
+                        <select
+                          className="form-control"
+                          name="category"
+                          onChange={this.onChangeCategory}
+                        >
+                        {
+                          this.state.listCategories.map(item =>{
+                            return (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                            )
+                          })
+                        }
+                        </select>
+                      </div>
+                    
+                    { this.state.showSearchProduct &&
+                      <table className = "table table-striped table-bordered">
+                            <tbody>
+                                {
+                                    this.state.listSearch.map(product =>                     
+                                      <tr key = {product.id}>
+                                             <td> {product.name} </td>                                    
+                                             <td>
+                                                <button type="button" onClick={ () => this.addProduct(product)} className="btn btn-primary">Add </button>                                                     
+                                             </td>
+                                      </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                    }
+                  </div>
+
+                  
+                <div className="col-sm">
+                  <label htmlFor="quantities">Products</label>
                   <table className = "table table-striped table-bordered">
                     <thead>
                       <tr>
                       <th>Name</th>
                       <th>Quantities</th>
+                      <th>Actions</th>
                       </tr>
                     </thead>
+                    {this.state.showListProduct &&
                     <tbody>
-                      {this.state.products.map(product => 
+                      {this.state.listProduct.map(product => 
                       <tr key = {product.id}>
                         <td>{product.name}</td>
                         <td>
@@ -196,14 +287,21 @@ export default class createOrder extends Component {
                           onChange={this.onChangeQuantity}
                         />
                         {product.price}$ / 1 {product.unit}</td>
+                        <td>
+                          <button onClick={ () => this.deleteProduct(product.id)} className="btn btn-danger">Delete </button>    
+                        </td>
                       </tr>
                       )}
                     </tbody>
+                    }
                   </table>
                 </div>
+                
 
+                </div>
+              
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">Place Order</button>
+                  <button  className="btn btn-primary btn-block">Place Order</button>
                 </div>
               </div>
             )}

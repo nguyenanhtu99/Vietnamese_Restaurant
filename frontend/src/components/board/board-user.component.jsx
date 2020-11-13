@@ -90,9 +90,9 @@ export default class BoardUser extends Component {
     return (
       <div className="jumbotron">
           <h3>{this.state.content}</h3>
-
           {this.state.content === "User Content." && 
           <div className="col-md-12">
+
             <div className="card card-container">
               <Form
                 onSubmit={this.handleRequest}
