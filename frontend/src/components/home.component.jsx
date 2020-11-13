@@ -31,11 +31,11 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className="background">
         <div className="hero-text-box">
                 <h1>Goodbye junk food. <br></br> Hello super healthy meals.</h1>
-                <a className="btn btn-full" href="/">I’m hungry</a>
-                <a className="btn btn-ghost" href="/">Show me more</a>
+                <a className="btn btn-full" href="/order/add">I’m hungry</a>
+                <a className="btn btn-ghost" href="/product">Show me more</a>
         </div>
       </div>
     );

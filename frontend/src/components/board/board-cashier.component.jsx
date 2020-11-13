@@ -69,6 +69,7 @@ export default class BoardCashier extends Component {
                                     <th> Created On</th>
                                     <th> Served At</th>
                                     <th> Product</th>
+                                    <th> Price</th>
                                     <th> Quantity</th>
                                     <th> Total</th>
                                     <th> Actions</th>
@@ -82,6 +83,7 @@ export default class BoardCashier extends Component {
                                              <td> {order.order.createdOn}</td>
                                              <td> {order.order.updatedOn}</td>
                                              <td> {order.product.name}</td>
+                                             <td> {order.product.price}$ / 1 {order.product.unit}</td>
                                              <td> {order.quantity} {order.product.unit}</td>
                                              <td> {order.order.total}$</td>
                                              <td>

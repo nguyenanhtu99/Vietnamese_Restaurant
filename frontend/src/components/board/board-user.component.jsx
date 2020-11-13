@@ -10,7 +10,7 @@ export default class BoardUser extends Component {
     super(props);
 
     this.state = {
-      id: AuthService.getCurrentUser().id,
+      user: AuthService.getCurrentUser(),
       content: "",
       role: [],
       successful: false,
@@ -61,7 +61,7 @@ export default class BoardUser extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       let request = {userRequest: this.state.role.join()};
 
-        AuthService.userRequest(this.state.id, request).then(
+        AuthService.userRequest(this.state.user.id, request).then(
         response => {
           this.setState({
             message: response.data.message,
