@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import authService from "../../services/auth.service";
 
 import ProductService from "../../services/product.service";
-import CategoryService from "../../services/category.service";
+import categoryService from "../../services/category.service";
 
 export default class Products extends Component {
   constructor(props) {
@@ -13,7 +13,10 @@ export default class Products extends Component {
       categories: [],
       categoryId: -1,
       currentUser: authService.getCurrentUser(),
-      content:''
+      content:'',
+      listCategories: [],
+      listProducts: [],
+      show: false
     };
     this.deleteProduct = this.deleteProduct.bind(this);
   }
@@ -22,9 +25,24 @@ export default class Products extends Component {
     ProductService.getAllProducts().then(
       response => {
         this.setState({
-          products: response.data,
+          products: response.data.sort((a,b) => a.categoryId - b.categoryId),
           content: "Product"
-        });    
+        }); 
+        categoryService.getAllCategories().then(
+          response => {
+            this.setState({
+              listCategories: response.data
+            });
+            let listProducts = [];
+            this.state.listCategories.forEach(category => {
+              let list  = this.state.products;
+              listProducts.push(list.filter(product => product.categoryId === category.id));
+            })
+            this.setState({listProducts: listProducts});
+
+          },
+          error => {}
+        );
       },
       error => {
         this.setState({
@@ -37,14 +55,9 @@ export default class Products extends Component {
         });
       }
     );
-    CategoryService.getListParent(-1).then(
-      response => {
-        this.setState({
-          categories: response.data
-        });
-      },
-      error => {}
-    );    
+    if (this.state.currentUser){
+      if (this.state.currentUser.roles.includes("ROLE_ADMIN") || this.state.currentUser.roles.includes("ROLE_MANAGER")) this.setState({show: true});
+    }
   }
 
   updateProduct(id){
@@ -66,37 +79,42 @@ export default class Products extends Component {
 
           {this.state.content === "Product" &&
                 <div className = "row">                  
-                    <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>New Product</button>
+                    {this.state.show && <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>New Product</button>}
                     
                     <table className = "table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th>Category</th>
                                 <th>Picture</th>
                                 <th>Product Name</th>
                                 <th>SKU</th>
                                 <th>Price</th>
                                 <th>Unit</th>            
-                                <th>Actions</th>
+                                {this.state.show && <th>Actions</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.products.map(item =>
-                                    <tr key = {item.id}>
-                                            <td> <img alt="pic" src={item.pictureUri === null ? 
-                                                    "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : item.pictureUri
+                                this.state.listProducts.map(category =>
+                                  category.map(product => 
+                                  <tr key = {product.id}>
+                                            <td>{this.state.listCategories.find(item => item.id === product.categoryId).name}</td>
+                                            <td> <img alt="pic" src={product.pictureUri === null ? 
+                                                    "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : product.pictureUri
                                                     } height="200px" width="200px" /> </td>
-                                            <td> {item.name} </td>   
-                                            <td> {item.sku}</td>
-                                            <td> {item.price}</td>
-                                            <td> {item.unit}</td>
-                                            <td>
-                                              <button onClick={ () => this.updateProduct(item.id)} className="btn btn-success">Update </button>                                            
-                                              <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProduct(item.id)} className="btn btn-danger">Delete </button>
-                                            </td>
+                                            <td> {product.name} </td>   
+                                            <td> {product.sku}</td>
+                                            <td> {product.price}</td>
+                                            <td> {product.unit}</td>
+                                            {this.state.show && <td>
+                                              <button onClick={ () => this.updateProduct(product.id)} className="btn btn-success">Update </button>                                            
+                                              <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProduct(product.id)} className="btn btn-danger">Delete </button>
+                                            </td>}
                                     </tr>
+                                  )
                                 )
-                            }
+                              }
+                              
                         </tbody>
                     </table>
                     

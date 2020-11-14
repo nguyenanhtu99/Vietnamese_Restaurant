@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -25,6 +25,8 @@ import Update from "./components/user/update.component";
 import createOrder from "./components/order/createOrder.component";
 import Orders from "./components/order/orders.component";
 
+import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink } from 'mdbreact';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,131 +50,125 @@ class App extends Component {
         showChefBoard: (user.roles.includes("ROLE_CHEF") || user.roles.includes("ROLE_ADMIN")),
         showManagerBoard: (user.roles.includes("ROLE_MANAGER") || user.roles.includes("ROLE_ADMIN")),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-        showOrdersBoard: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER"))
+        showOrdersBoard: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER")),
+        showCategory: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER"))
       });
     }
   }
 
   logOut() {
     AuthService.logout();
+    window.location.href = "/"
   }
 
   render() {
-    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showAdminBoard, showOrdersBoard } = this.state;
+    const color = {backgroundColor: '#212529'}
+    //const container = {height: 1300}
+    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showOrdersBoard, showCategory } = this.state;
 
     return (
-      <div className="background">
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-            Restaurant
-          </Link>
-          <div className="navbar-nav mr-auto">
+      <div className="">
+        
+        <header>
+        <MDBNavbar style={color} fixed="top" dark expand="md">
+              <MDBContainer>
+                <MDBNavbarBrand href="/">
+                  <strong>Restaurant</strong>
+                </MDBNavbarBrand>
+                <MDBNavbarToggler onClick={this.onClick} />
+                <MDBCollapse isOpen={this.state.collapse} navbar>
+                  <MDBNavbarNav left>
 
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
-                </Link>
-              </li>
-            )}
+                    <MDBNavItem active>
+                      <MDBNavLink to="/">Home</MDBNavLink>
+                    </MDBNavItem>
 
-            {showManagerBoard && (
-              <li className="nav-item">
-                <Link to={"/manager"} className="nav-link">
-                  Manager Board
-                </Link>
-              </li>
-            )}
+                    {showManagerBoard &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/manager">Manager</MDBNavLink>
+                    </MDBNavItem>
+                    }
 
-            {showWaiterBoard && (
-              <li className="nav-item">
-                <Link to={"/waiter"} className="nav-link">
-                  Waiter Board
-                </Link>
-              </li>
-            )}
+                    {showWaiterBoard &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/waiter">Waiter</MDBNavLink>
+                    </MDBNavItem>
+                    }
 
-            {showChefBoard && (
-              <li className="nav-item">
-                <Link to={"/chef"} className="nav-link">
-                  Chef Board
-                </Link>
-              </li>
-            )}
+                    {showChefBoard &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/chef">Chef</MDBNavLink>
+                    </MDBNavItem>
+                    }
 
-            {showCashierBoard && (
-              <li className="nav-item">
-                <Link to={"/cashier"} className="nav-link">
-                  Cashier Board
-                </Link>
-              </li>
-            )}
+                    {showCashierBoard &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/cashier">Cashier</MDBNavLink>
+                    </MDBNavItem>
+                    }
 
-            {showOrdersBoard && (
-              <li className="nav-item">
-                <Link to={"/orders"} className="nav-link">
-                  Orders
-                </Link>
-              </li>
-            )}
+                    {currentUser &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/user">User</MDBNavLink>
+                    </MDBNavItem>
+                    }
+                  </MDBNavbarNav>
 
-            {showOrdersBoard && (
-              <li className="nav-item">
-                <Link to={"/product"} className="nav-link">
-                  Product
-                </Link>
-              </li>
-            )}
+                  <MDBNavbarNav right>
 
-            {showOrdersBoard && (
-              <li className="nav-item">
-                <Link to={"/category"} className="nav-link">
-                  Category
-                </Link>
-              </li>
-            )}
+                    {showOrdersBoard &&
+                    <MDBNavItem>
+                        <MDBNavLink to="/orders">Orders</MDBNavLink>
+                    </MDBNavItem>
+                    }     
 
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-            )}
-          </div>
+                    {showCategory &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/category">Categories</MDBNavLink>
+                    </MDBNavItem>
+                    }
+                    
+                    {currentUser &&
+                    <MDBNavItem>
+                      <MDBNavLink to="/product">Products</MDBNavLink>
+                    </MDBNavItem>
+                    }
+  
+                  </MDBNavbarNav>
 
-          {currentUser ? (
-            <div className = "navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
-                  {currentUser.username}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={this.logOut}>
-                  LogOut
-                </a>
-              </li>
-            </div>
-          ) : (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Login
-                </Link>
-              </li>
+                  {currentUser ? (
+                  <MDBNavbarNav right>
+                  
+                    <MDBNavItem>
+                      <MDBNavLink to="/profile">{currentUser.username}</MDBNavLink>
+                    </MDBNavItem>
 
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
-                </Link>
-              </li>
-            </div>
-          )}
-        </nav>
+                    <MDBNavItem>
+                      <MDBNavLink to="/" onClick={this.logOut}>LogOut</MDBNavLink>
+                    </MDBNavItem>
+                    
+                  </MDBNavbarNav>
+                  ) : (
+                    <MDBNavbarNav right>
+                  
+                    <MDBNavItem>
+                      <MDBNavLink to="/register">Register</MDBNavLink>
+                    </MDBNavItem>
 
-        <div className="container mt-3">
-          <Switch>
+                    <MDBNavItem>
+                      <MDBNavLink to="/login">LogIn</MDBNavLink>
+                    </MDBNavItem>
+                    
+                  </MDBNavbarNav>)}
+
+                </MDBCollapse>
+              </MDBContainer>
+            </MDBNavbar>
+          </header>
+
+        
+        <div>
+        <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
@@ -192,8 +188,9 @@ class App extends Component {
             <Route path="/chef" component={BoardChef} />
             <Route path="/manager" component={BoardManager} />
             <Route path="/admin" component={BoardAdmin} />
-          </Switch>
+            </Switch>
         </div>
+
       </div>
     );
   }

@@ -41,7 +41,9 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('WAITER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('WAITER') or " +
+            "hasRole('CASHIER') or hasRole('CHEF') or " +
+            "hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest){
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

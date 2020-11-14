@@ -39,7 +39,7 @@ export default class createOrder extends Component {
     this.deleteProduct = this.deleteProduct.bind(this);
 
     this.state = {
-      user_id: authService.getCurrentUser().id,
+      user: authService.getCurrentUser(),
       products: [],
       product_ids: [],
       quantities: [],
@@ -152,7 +152,7 @@ export default class createOrder extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-        let orderRequest = {user_id: this.state.user_id,
+        let orderRequest = {user_id: this.state.user.id,
                             position: this.state.position,
                             note: this.state.note,
                             product_ids: this.state.product_ids,
@@ -187,9 +187,13 @@ export default class createOrder extends Component {
 
   render() {
     return (
-      <div className="container">
-        
-        <div className="card col-8">
+      <div className="jumbotron" >
+        {!this.state.user ? (
+        <div style={{marginTop: "50px"}}>
+          <h3>Please Log In</h3>
+        </div>
+        ):(
+        <div className="card col-8" style={{marginTop: "50px"}}>
           <h3>New order</h3>
           <Form
             onSubmit={this.handlePlaceOrder}
@@ -328,6 +332,7 @@ export default class createOrder extends Component {
             />
           </Form>
         </div>
+        )}
       </div>
     );
   }

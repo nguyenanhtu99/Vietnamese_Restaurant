@@ -187,6 +187,7 @@ export default class NewProduct extends Component {
           });
         }
       );
+      this.props.history.push('/product');
     }
   }
 
