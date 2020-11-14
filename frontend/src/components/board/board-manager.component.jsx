@@ -75,7 +75,7 @@ export default class BoardManager extends Component {
                                       <tr key = {user.id}>
                                              <td> {user.username} </td>   
                                              <td> {user.email}</td>
-                                             <td> {user.roles.map(role => <div>{role.name}</div>)}</td>
+                                             <td> {user.roles.map(role => <div key={role.id}>{role.name}</div>)}</td>
                                              <td> {user.userRequest}</td>
                                              <td>
                                                 <button onClick={ () => this.updateUser(user.id)} className="btn btn-success">Update </button>                                            

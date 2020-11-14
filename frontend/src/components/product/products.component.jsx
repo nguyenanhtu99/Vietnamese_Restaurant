@@ -19,15 +19,6 @@ export default class Products extends Component {
   }
 
   componentDidMount() {
-    CategoryService.getListParent(-1).then(
-      response => {
-        this.setState({
-          categories: response.data
-        });
-      },
-      error => {}
-    );
-
     ProductService.getAllProducts().then(
       response => {
         this.setState({
@@ -46,6 +37,14 @@ export default class Products extends Component {
         });
       }
     );
+    CategoryService.getListParent(-1).then(
+      response => {
+        this.setState({
+          categories: response.data
+        });
+      },
+      error => {}
+    );    
   }
 
   updateProduct(id){

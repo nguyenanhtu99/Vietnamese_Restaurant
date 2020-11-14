@@ -106,7 +106,7 @@ export default class BoardUser extends Component {
                             {   this.state.listRole.map(role => {
                                     return (
                                         <div className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" id={role} value={role} onChange={this.handleCheckboxChange} />
+                                            <input type="checkbox" className="custom-control-input" key={role} id={role} value={role} onChange={this.handleCheckboxChange} />
                                             <label className="custom-control-label" htmlFor={role}>{role}</label>
                                         </div>
                                     )
