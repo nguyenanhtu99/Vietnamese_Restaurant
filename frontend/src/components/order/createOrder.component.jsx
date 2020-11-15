@@ -320,7 +320,7 @@ export default class createOrder extends Component {
                   }
                   role="alert"
                 >
-                  {this.state.message}
+                  <h4 style={{textAlign: "center"}}>{this.state.message}</h4>
                 </div>
               </div>
             )}

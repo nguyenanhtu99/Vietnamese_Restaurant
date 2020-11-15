@@ -49,10 +49,9 @@ export default class Categories extends Component {
   render() {
     return (
       <div className="jumbotron">
-          <h3>{this.state.content}</h3>
-
-          {this.state.content === "Category" &&
-                <div className = "row">                    
+          {this.state.content === "Category" ? (
+                <div className = "card" style={{width: "30rem"}}> 
+                  <h3>{this.state.content}</h3>                  
                   <button className = "btn btn-primary" onClick = {() => this.props.history.push("/category/add")}>New Category</button>
                     <table className = "table table-striped table-bordered">
                         <thead>
@@ -75,7 +74,9 @@ export default class Categories extends Component {
                             }
                         </tbody>
                     </table>
-                </div>
+                </div>):(
+                  <h3>{this.state.content}</h3>
+                )
             }
       </div>
     );

@@ -51,7 +51,8 @@ class App extends Component {
         showManagerBoard: (user.roles.includes("ROLE_MANAGER") || user.roles.includes("ROLE_ADMIN")),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
         showOrdersBoard: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER")),
-        showCategory: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER"))
+        showCategory: (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_MANAGER")),
+        showUserBoard: user.roles.includes("ROLE_USER")
       });
     }
   }
@@ -64,7 +65,7 @@ class App extends Component {
   render() {
     const color = {backgroundColor: '#212529'}
     //const container = {height: 1300}
-    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showOrdersBoard, showCategory } = this.state;
+    const { currentUser, showWaiterBoard, showCashierBoard, showChefBoard, showManagerBoard, showOrdersBoard, showUserBoard, showCategory } = this.state;
 
     return (
       <div className="">
@@ -107,7 +108,7 @@ class App extends Component {
                     </MDBNavItem>
                     }
 
-                    {currentUser &&
+                    {showUserBoard &&
                     <MDBNavItem>
                       <MDBNavLink to="/user">User</MDBNavLink>
                     </MDBNavItem>
@@ -128,7 +129,7 @@ class App extends Component {
                     </MDBNavItem>
                     }
                     
-                    {currentUser &&
+                    {showOrdersBoard &&
                     <MDBNavItem>
                       <MDBNavLink to="/product">Products</MDBNavLink>
                     </MDBNavItem>

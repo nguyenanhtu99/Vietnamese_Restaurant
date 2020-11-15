@@ -193,8 +193,9 @@ export default class NewProduct extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
+      <div className="row">
+        <div className="card" style={{marginTop:"70px"}}>
+          <h3>New Product</h3>
           <Form
             onSubmit={this.handleProduct}
             ref={c => {
@@ -203,35 +204,39 @@ export default class NewProduct extends Component {
           >
             {!this.state.successful && (
               <div>
-                <div className="form-group">
-                    <label htmlFor="categoryId">Category</label>
-                    <select
-                      className="form-control"
-                      name="categoryId"
-                      value={this.state.categoryId}
-                      onChange={this.onChangeCategory}
-                      >
-                    {
-                        this.state.listCategories.map(item =>{
-                            return (
-                              <option key={item.id} value={item.id}> {item.name} </option>
-                            )
-                        })
-                    }
-                    </select>
-                </div>
 
-                <div className="form-group">
-                  <label htmlFor="name">Product Name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChangeName}
-                    validations={[required, vname]}
-                  />
+                <div className="row">
+                  <div className="col-6">
+                      <label htmlFor="categoryId">Category</label>
+                      <select
+                        className="form-control"
+                        name="categoryId"
+                        value={this.state.categoryId}
+                        onChange={this.onChangeCategory}
+                        >
+                      {
+                          this.state.listCategories.map(item =>{
+                              return (
+                                <option key={item.id} value={item.id}> {item.name} </option>
+                              )
+                          })
+                      }
+                      </select>
+                  </div>
+
+                  <div className="col">
+                    <label htmlFor="name">Product Name</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="name"
+                      value={this.state.name}
+                      onChange={this.onChangeName}
+                      validations={[required, vname]}
+                    />
+                  </div>
                 </div>
+                
 
                 <div className="form-group">
                   <label htmlFor="sku">SKU</label>
@@ -243,38 +248,41 @@ export default class NewProduct extends Component {
                     onChange={this.onChangeSku}
                   />
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="price">Price</label>
-                  <Input
-                    type="number"
-                    className="form-control"
-                    name="price"
-                    step=".01"
-                    value={this.state.price}
-                    onChange={this.onChangePrice}
-                  />
+                
+                <div className="row">
+                  <div className="col-6">
+                    <label htmlFor="price">Price</label>
+                    <Input
+                      type="number"
+                      className="form-control"
+                      name="price"
+                      step=".01"
+                      value={this.state.price}
+                      onChange={this.onChangePrice}
+                    />
+                  </div>
+                  
+                  <div className="col-6">
+                      <label htmlFor="unit">Unit</label>
+                      <select
+                        className="form-control"
+                        name="unit"
+                        value={this.state.unit}
+                        onChange={this.onChangeUnit}
+                        >
+                      {
+                          this.state.listUnit.map(item =>{
+                              return (
+                              <option key={item}>{item} </option>
+                              )
+                          })
+                      }
+                      </select>
+                  </div>
                 </div>
                 
-                <div className="form-group">
-                    <label htmlFor="unit">Unit</label>
-                    <select
-                      className="form-control"
-                      name="unit"
-                      value={this.state.unit}
-                      onChange={this.onChangeUnit}
-                      >
-                    {
-                        this.state.listUnit.map(item =>{
-                            return (
-                            <option key={item}>{item} </option>
-                            )
-                        })
-                    }
-                    </select>
-                </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="isShowOnHomepage">Show On Homepage</label>
                     <Input
                       type="checkbox"
@@ -292,20 +300,21 @@ export default class NewProduct extends Component {
                       value={this.state.isEnteredPrice}
                       onChange={this.onChangeEnteredPrice}
                     />
-                </div>
+                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="picture">Picture</label>
                     <Input
-                      type="file"
+                      type="file" 
                       name="picture"
+                      className="btn"
                       accept="image/*"
                       onChange={this.onChangePicture}
-                    />                                        
+                    />                                  
                     <img alt="preview" src={
                       this.state.picturePreviewUrl === null ? 
                       "https://www.amerikickkansas.com/wp-content/uploads/2017/04/default-image.jpg" : this.state.picturePreviewUrl
-                      } height="200px" width="200px"/>
+                      } height="400px" width="400px"/>
                 </div>
 
                 <div className="form-group">

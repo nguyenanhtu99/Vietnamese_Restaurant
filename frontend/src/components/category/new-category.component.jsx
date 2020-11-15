@@ -108,8 +108,9 @@ export default class NewCategory extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
+      <div className="container">
+        <div className="card card-container" style={{marginTop: "70px"}}>
+          <h3>New</h3>
           <Form
             onSubmit={this.handleCategory}
             ref={c => {

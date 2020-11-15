@@ -43,10 +43,9 @@ export default class Orders extends Component {
   render() {
     return (
       <div className="jumbotron">
-          <h3>{this.state.content}</h3>
-
-          {this.state.content === "Orders" &&
-                 <div className = "row">
+          {this.state.content === "Orders" ? (
+                 <div className = "card">
+                   <h3>{this.state.content}</h3>
                         <table className = "table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -80,7 +79,9 @@ export default class Orders extends Component {
                             </tbody>
                         </table>
                     
-                 </div>
+                 </div>):(
+                   <h3>{this.state.content}</h3>
+                 )
             }
       </div>
     );

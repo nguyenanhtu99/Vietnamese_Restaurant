@@ -10,7 +10,8 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" }
+      currentUser: { username: "" },
+      user: []
     };
     this.editUser = this.editUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
@@ -18,6 +19,12 @@ export default class Profile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
+    authService.getUserById(currentUser.id).then(
+      response => {
+        this.setState({user: response.data});
+      }
+      
+    )
 
     if (!currentUser) this.setState({ redirect: "/home" });
     this.setState({ currentUser: currentUser, userReady: true })
@@ -46,34 +53,40 @@ export default class Profile extends Component {
       <div className="jumbotron">
         {(this.state.userReady) ?
         <div>
-          <h3>
+            <div className="card card-container">
+            <h2 style={{textAlign:"center"}}>
             <strong>{currentUser.username}</strong> Profile
-            
-          </h3>
-          <button onClick={ () => this.editUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-success">Update </button> 
-            {currentUser.roles.includes("ROLE_ADMIN") &&
-              <button onClick={ () => this.deleteUser(currentUser.id)} style={{marginLeft: "10px"}} className="btn btn-danger">Delete </button>
-            }
-          
+            </h2>
+              {/* <p>
+                <strong>Token:</strong>{" "}
+                {currentUser.accessToken.substring(0, 20)} ...{" "}
+                {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+              </p> */}
+              <p>
+                <strong>User Name:</strong>{" "}
+                {currentUser.username}
+              </p>
+              <p>
+                <strong>Email:</strong>{" "}
+                {currentUser.email}
+              </p>
+              <strong>Authorities:</strong>
+              <ul>
+                {currentUser.roles &&
+                  currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+              </ul>
 
-          <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
+              <p>
+                <strong>Request Roles:</strong>{" "}
+                {this.state.user.userRequest}
+              </p>
+
+              <button onClick={ () => this.editUser(currentUser.id)} className="btn btn-success">Update </button> 
+              {currentUser.roles.includes("ROLE_ADMIN") &&
+                <button onClick={ () => this.deleteUser(currentUser.id)} style={{marginTop: "10px"}} className="btn btn-danger">Delete </button>
+              }
+            </div>
+          
         
       </div>: null}
       </div>

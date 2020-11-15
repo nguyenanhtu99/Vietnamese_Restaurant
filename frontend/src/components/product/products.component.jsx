@@ -75,10 +75,9 @@ export default class Products extends Component {
   render() {
     return (
       <div className="jumbotron">
-          <h3>{this.state.content}</h3>
-
-          {this.state.content === "Product" &&
-                <div className = "row">                  
+          {this.state.content === "Product" ? (
+                <div className = "card" style={{width: "70rem"}}>  
+                    <h3>{this.state.content}</h3>                
                     {this.state.show && <button className = "btn btn-primary" onClick = {() => this.props.history.push("/product/add")}>New Product</button>}
                     
                     <table className = "table table-striped table-bordered">
@@ -118,7 +117,9 @@ export default class Products extends Component {
                         </tbody>
                     </table>
                     
-                </div>
+                </div>):(
+                  <h3>{this.state.content}</h3>
+                )
             }
       </div>
     );

@@ -82,18 +82,17 @@ export default class BoardUser extends Component {
             });
           }
         );
-      } 
     }
+      
+  }
   
 
   render() {
     return (
       <div className="jumbotron">
-          <h3>{this.state.content}</h3>
-          {this.state.content === "User Content." && 
-          <div className="col-md-12">
-
-            <div className="card card-container">
+          {this.state.content === "User Content." ? (
+            <div className="card" style={{width: "20rem"}}>
+              <h3>{this.state.content}</h3>
               <Form
                 onSubmit={this.handleRequest}
                 ref={c => {
@@ -140,8 +139,9 @@ export default class BoardUser extends Component {
                   }}
                 />
               </Form>
-            </div>
-          </div>
+          </div>):(
+            <h3>{this.state.content}</h3>
+          )
           }
       </div>
     );

@@ -83,7 +83,10 @@ public class OrderController {
         List<OrderProduct> orderProducts = orderProductRepository.findAll().stream()
                 .filter(orderProduct -> orderProduct.getOrder().getId().equals(id))
                 .collect(Collectors.toList());
-        orderProducts.forEach(orderProduct -> orderProductRepository.delete(orderProduct));
+        orderProducts.forEach(orderProduct -> {
+            orderProduct.setProduct(null);
+            orderProductRepository.delete(orderProduct);
+        });
 
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

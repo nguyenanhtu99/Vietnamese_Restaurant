@@ -51,10 +51,9 @@ export default class BoardWaiter extends Component {
   render() {
     return (
       <div className="jumbotron">
-          <h3>{this.state.content}</h3>
-
-          {this.state.content === "Waiter" &&
-              <div className = "row">                    
+          {this.state.content === "Waiter" ? (
+              <div className = "card" style={{width: "60rem"}}>                    
+                            <h3>{this.state.content}</h3>
                   <button onClick={ () => this.placeOrder()} className="btn btn-primary">New order</button> 
 
                   <table className = "table table-striped table-bordered">
@@ -85,7 +84,9 @@ export default class BoardWaiter extends Component {
                           }
                       </tbody>
                   </table>
-              </div>
+              </div>):(
+                <h3>{this.state.content}</h3>
+              )
             }
       </div>
     );
