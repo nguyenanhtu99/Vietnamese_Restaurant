@@ -49,6 +49,7 @@ export default class Orders extends Component {
                         <table className = "table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th> User</th>
                                     <th> Table</th>
                                     <th> Created On</th>
                                     <th> Update At</th>
@@ -63,6 +64,7 @@ export default class Orders extends Component {
                                 {
                                     this.state.orders.map(order =>                     
                                       <tr key = {order.order.id}>
+                                             <td> {order.order.user.username}</td>
                                              <td> {order.order.position} </td>   
                                              <td> {order.order.createdOn}</td>
                                              <td> {order.order.updatedOn}</td>

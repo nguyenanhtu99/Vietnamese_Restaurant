@@ -15,9 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import vietnam.restaurant.models.orders.OrderProduct;
 import vietnam.restaurant.models.users.*;
 import vietnam.restaurant.loaders.requests.*;
 import vietnam.restaurant.loaders.responses.*;
+import vietnam.restaurant.repository.orders.OrderProductRepository;
 import vietnam.restaurant.repository.users.RoleRepository;
 import vietnam.restaurant.repository.users.UserRepository;
 import vietnam.restaurant.security.jwt.JwtUtils;
@@ -35,6 +37,9 @@ public class UserController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    OrderProductRepository orderProductRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -243,6 +248,14 @@ public class UserController {
     public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+
+        List<OrderProduct> orderProducts = orderProductRepository.findAll().stream()
+                .filter(orderProduct -> orderProduct.getOrder().getUser().getId().equals(id))
+                .collect(Collectors.toList());
+        orderProducts.forEach(orderProduct -> {
+            orderProduct.setProduct(null);
+            orderProductRepository.delete(orderProduct);
+        });
         userRepository.delete(user);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
